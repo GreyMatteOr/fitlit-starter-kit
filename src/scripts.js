@@ -13,7 +13,3 @@ function getRandomUser() {
   let randomIndex = Math.floor(Math.random() * users.data.length)
   return new User(users.data[randomIndex]);
 }
-
-function getUserInfo() {
-
-}
