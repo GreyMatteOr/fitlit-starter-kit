@@ -1,5 +1,5 @@
 class User {
-  constructor(data) {
+  constructor(data, hydration) {
     this.id = data.id;
     this.name = data.name;
     this.address = data.address;
@@ -7,6 +7,7 @@ class User {
     this.strideLength = data.strideLength;
     this.dailyStepGoal = data.dailyStepGoal;
     this.friends = data.friends;
+    this.hydration = hydration;
   }
 
   getFirstName() {
@@ -14,6 +15,11 @@ class User {
       return '';
     }
     return this.name.split(' ')[0];
+  }
+
+  getLastDay() {
+  console.log(this.hydration.data);
+    return this.hydration.data[this.hydration.data.length - 1].date;
   }
 }
 
