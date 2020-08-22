@@ -1,5 +1,5 @@
 class UserRepository{
-  constructor(hydration = {}, sleep = {}, activity ={}) {
+  constructor(hydration, sleep, activity) {
     this.hydration = hydration;
     this.sleep = sleep;
     this.activity = activity;
