@@ -83,4 +83,16 @@ describe('Hydration', function() {
       expect(hydration.findOuncesWaterOfDay(date)).to.equal(0);
     });
   });
+
+  describe('findOuncesWaterOfDay()', function() {
+    it('should return an Array the ounces of water drunk for a given date', function() {
+      let date = '2019/06/21'
+      expect(hydration.findOuncesWaterOfWeekBefore(date)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
+    });
+
+    it(`shouldn't return an entry in the array if it can't find the day`, function() {
+      let date = '2019/06/20'
+      expect(hydration.findOuncesWaterOfWeekBefore(date)).to.deep.equal([37, 69, 96, 96, 28, 82]);
+    });
+  });
 });
