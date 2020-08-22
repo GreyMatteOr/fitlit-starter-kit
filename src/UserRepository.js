@@ -1,8 +1,18 @@
 class UserRepository{
-  constructor(hydration, sleep, activity) {
-    this.hydration = hydration;
-    this.sleep = sleep;
-    this.activity = activity;
+  constructor(userData) {
+    this.data = userData
+  }
+  getUser(id) {
+    return this.data.find(user => user.id === id);
+  }
+  calculateAverageStepGoal() {
+    if(this.data.length === 0) {
+      return 0;
+    }
+    let totalStepGoal = this.data.reduce((sumOfSteps, user) => {
+      return sumOfSteps + user.dailyStepGoal;
+    }, 0);
+    return totalStepGoal / this.data.length
   }
 }
 
