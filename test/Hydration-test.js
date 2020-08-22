@@ -59,6 +59,7 @@ describe('Hydration', function() {
       expect(hydration.data).to.deep.equal(hydrationData);
     });
   });
+
   describe('calculateAverageHydration', function() {
     it('should return the average daily consumption', function() {
       expect(hydration.calculateAverageHydration()).to.equal(507 / 7);
@@ -68,6 +69,18 @@ describe('Hydration', function() {
       hydration.data = [];
 
       expect(hydration.calculateAverageHydration()).to.equal(0);
+    });
+  });
+
+  describe('findOuncesWaterOfDay()', function() {
+    it('should return the ounces of water drunk for a given date', function() {
+      let date = '2019/06/17'
+      expect(hydration.findOuncesWaterOfDay(date)).to.equal(96);
+    });
+
+    it(`should return 0 if it can't find the day`, function() {
+      let date = '2020/06/17'
+      expect(hydration.findOuncesWaterOfDay(date)).to.equal(0);
     });
   });
 });
