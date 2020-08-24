@@ -55,26 +55,38 @@ describe('Sleep', function() {
   });
 
   describe('Intialization', function() {
-
     it('should be a function', function() {
       expect(Sleep).to.be.a('function');
     });
+
     it('should be an instance of Sleep', function() {
       expect(sleep).to.be.an.instanceof(Sleep);
     });
+
     it('should store an array of sleep objects', function() {
       expect(sleep.data).to.deep.equal(sleepUserData);
     });
   });
 
   describe('calculateAverage()', function() {
-
     it('should calculate the average number of hours a user has slept per day', function() {
       expect(sleep.calculateAverage()).to.equal(48.1 / 7);
     });
+
     it('should return 0 if there is no sleep data available', function() {
       sleep = new Sleep([]);
       expect(sleep.calculateAverage()).to.equal(0);
+    });
+  });
+
+  describe('calculateAverageQuality()', function() {
+    it('should calculate the average sleep quality per day over all time', function() {
+      expect(sleep.calculateAverageQuality()).to.be.closeTo((23.7 / 7), .0001);
+    });
+
+    it('should return 0 if there is no sleep data available', function() {
+      sleep = new Sleep([]);
+      expect(sleep.calculateAverageQuality()).to.equal(0);
     });
   });
 
