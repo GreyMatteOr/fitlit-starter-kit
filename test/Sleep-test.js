@@ -90,4 +90,23 @@ describe('Sleep', function() {
     });
   });
 
+  describe('getHoursSleptOnDate()', function() {
+    it('should return the amount of hours slept for a specific date', function() {
+      expect(sleep.getHoursSleptOnDate("2019/06/17")).to.equal(10.8);
+    });
+
+    it('should return calculateAverage() if there is no sleep data available', function() {
+      expect(sleep.getHoursSleptOnDate("2189/06/17")).to.equal(48.1 / 7);
+    });
+  });
+
+  describe('getQualityOnDate()', function() {
+    it('should return the quality of sleep for a specific date', function() {
+      expect(sleep.getQualityOnDate("2019/06/17")).to.equal(4.7);
+    });
+
+    it('should return calculateAverageQuality() if there is no sleep data available', function() {
+      expect(sleep.getQualityOnDate("2189/06/17")).to.closeTo((23.7 / 7), .0001);
+    });
+  });
 });

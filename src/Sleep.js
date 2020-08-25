@@ -24,6 +24,20 @@ class Sleep {
     }, 0);
     return totalQuality / this.data.length;
   }
+
+  getHoursSleptOnDate(date) {
+    let sleepDay = this.data.find((day) => {
+      return date === day.date;
+    });
+    return (sleepDay === undefined ? this.calculateAverage() : sleepDay.hoursSlept);
+  };
+
+  getQualityOnDate(date) {
+    let sleepDay = this.data.find((day) => {
+      return date === day.date;
+    });
+    return (sleepDay === undefined ? this.calculateAverageQuality() : sleepDay.sleepQuality);
+  };
 };
 
 module.exports = Sleep;
