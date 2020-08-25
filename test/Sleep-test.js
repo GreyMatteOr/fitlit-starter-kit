@@ -128,4 +128,23 @@ describe('Sleep', function() {
       expect(sleep.getWeeklySleepQuantity("2020/06/21")).to.deep.equal([0, 0, 0, 0, 0, 0, 0]);
     })
   });
+
+  describe('getWeeklySleepQuality()', function() {
+    it('should return an Array of quality of sleep for 7 days ending on the date passed in', function() {
+      let weekOfSleepData = [
+        2.2,
+        4.7,
+        4.7,
+        3,
+        3.6,
+        2.9,
+        2.6
+      ];
+      expect(sleep.getWeeklySleepQuality("2019/06/21")).to.deep.equal(weekOfSleepData);
+    });
+
+    it('should return an array of seven `0`-s if the end date is not defined', function () {
+      expect(sleep.getWeeklySleepQuality("2020/06/21")).to.deep.equal([0, 0, 0, 0, 0, 0, 0]);
+    })
+  });
 });
