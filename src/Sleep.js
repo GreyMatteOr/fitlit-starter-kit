@@ -51,11 +51,11 @@ class Sleep {
     return (day === undefined ? 0 : day[detail]);
   }
 
-  getWeeklySleepQuantity(date, id) {
+  getWeeklyQuantity(date, id) {
     return this.getDetailOnWeek('hoursSlept', date, id);
   }
 
-  getWeeklySleepQuality(date, id) {
+  getWeeklyQuality(date, id) {
     return this.getDetailOnWeek('sleepQuality', date, id);
   }
 
@@ -69,11 +69,22 @@ class Sleep {
     let endOfWeek = userData.find((day) => {
       return date === day.date;
     });
-    if (endOfWeek === undefined) return [0, 0, 0, 0, 0, 0, 0];
     let endOfWeekIndex = userData.indexOf(endOfWeek) + 1;
-    let beginningOfWeekIndex = endOfWeekIndex - 7;
+    let beginningOfWeekIndex = Math.max(endOfWeekIndex - 7, 0);
     let week = userData.slice(beginningOfWeekIndex, endOfWeekIndex);
-    return week.map(day => this.getDetailOnDate(detail , day.date, id));
+    let output = week.map(day => this.getDetailOnDate(detail , day.date, id));
+    while (output.length < 7) {
+      output.unshift(0);
+    }
+    return output;
+  }
+
+  getAverageQualityAll() {
+    if(this.data.length === 0) return 0;
+    let totalSleepRating = this.data.reduce((sleepQuality, sleepData) => {
+      return sleepQuality + sleepData.sleepQuality;
+    }, 0);
+    return totalSleepRating / this.data.length;
   }
 };
 
