@@ -95,8 +95,8 @@ describe('Sleep', function() {
       expect(sleep.getHoursSleptOnDate("2019/06/17")).to.equal(10.8);
     });
 
-    it('should return calculateAverage() if there is no sleep data available', function() {
-      expect(sleep.getHoursSleptOnDate("2189/06/17")).to.equal(48.1 / 7);
+    it('should return 0 if there is no sleep data available', function() {
+      expect(sleep.getHoursSleptOnDate("2189/06/17")).to.equal(0);
     });
   });
 
@@ -105,8 +105,27 @@ describe('Sleep', function() {
       expect(sleep.getQualityOnDate("2019/06/17")).to.equal(4.7);
     });
 
-    it('should return calculateAverageQuality() if there is no sleep data available', function() {
-      expect(sleep.getQualityOnDate("2189/06/17")).to.closeTo((23.7 / 7), .0001);
+    it('should return 0 if there is no sleep data available', function() {
+      expect(sleep.getQualityOnDate("2189/06/17")).to.closeTo((0), .0001);
     });
+  });
+
+  describe('getWeeklySleepQuantity()', function() {
+    it('should return an Array of hoursSlept for 7 days ending on the date passed in', function() {
+      let weekOfSleepData = [
+        6.1,
+        7,
+        10.8,
+        5.4,
+        4.1,
+        9.6,
+        5.1
+      ];
+      expect(sleep.getWeeklySleepQuantity("2019/06/21")).to.deep.equal(weekOfSleepData);
+    });
+
+    it('should return an array of seven `0`-s if the end date is not defined', function () {
+      expect(sleep.getWeeklySleepQuantity("2020/06/21")).to.deep.equal([0, 0, 0, 0, 0, 0, 0]);
+    })
   });
 });

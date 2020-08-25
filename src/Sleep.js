@@ -29,15 +29,26 @@ class Sleep {
     let sleepDay = this.data.find((day) => {
       return date === day.date;
     });
-    return (sleepDay === undefined ? this.calculateAverage() : sleepDay.hoursSlept);
+    return (sleepDay === undefined ? 0 : sleepDay.hoursSlept);
   };
 
   getQualityOnDate(date) {
     let sleepDay = this.data.find((day) => {
       return date === day.date;
     });
-    return (sleepDay === undefined ? this.calculateAverageQuality() : sleepDay.sleepQuality);
+    return (sleepDay === undefined ? 0 : sleepDay.sleepQuality);
   };
+
+  getWeeklySleepQuantity(date) {
+    let endOfWeek = this.data.find((day) => {
+      return date === day.date;
+    });
+    if (endOfWeek === undefined) return [0, 0, 0, 0, 0, 0, 0];
+    let endOfWeekIndex = this.data.indexOf(endOfWeek) + 1;
+    let beginningOfWeekIndex = endOfWeekIndex - 7;
+    let week = this.data.slice(beginningOfWeekIndex, endOfWeekIndex);
+    return week.map(day => this.getHoursSleptOnDate(day.date));
+  }
 };
 
 module.exports = Sleep;
