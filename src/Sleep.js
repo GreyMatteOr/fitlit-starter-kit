@@ -4,25 +4,22 @@ class Sleep {
   };
 
   calculateAverage() {
-    if(this.data.length === 0){
-      return 0;
-    }
-    let totalHoursSlept = this.data.reduce((hoursSlept, day) => {
-      hoursSlept += day.hoursSlept;
-      return hoursSlept;
-    }, 0);
-    return totalHoursSlept / this.data.length;
+    return this.calculateDetailAverage('hoursSlept');
   }
 
   calculateAverageQuality() {
+    return this.calculateDetailAverage('sleepQuality');
+  }
+
+  calculateDetailAverage(detail) {
     if(this.data.length === 0){
       return 0;
     }
-    let totalQuality = this.data.reduce((sleepQuality, day) => {
-      sleepQuality += day.sleepQuality;
-      return sleepQuality;
+    let total = this.data.reduce((sum, day) => {
+      sum += day[detail];
+      return sum;
     }, 0);
-    return totalQuality / this.data.length;
+    return total / this.data.length;
   }
 
   getHoursSleptOnDate(date) {
@@ -34,10 +31,10 @@ class Sleep {
   };
 
   getDetailOnDate(detail, date) {
-    let sleepDay = this.data.find((day) => {
-      return date === day.date;
+    let day = this.data.find((testDay) => {
+      return date === testDay.date;
     });
-    return (sleepDay === undefined ? 0 : sleepDay[detail]);
+    return (day === undefined ? 0 : day[detail]);
   }
 
   getWeeklySleepQuantity(date) {
