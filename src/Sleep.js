@@ -80,11 +80,17 @@ class Sleep {
   }
 
   getAverageQualityAll() {
-    if(this.data.length === 0) return 0;
-    let totalSleepRating = this.data.reduce((sleepQuality, sleepData) => {
-      return sleepQuality + sleepData.sleepQuality;
-    }, 0);
-    return totalSleepRating / this.data.length;
+    if (this.data.length === 0) return [];
+    let userTotals = this.data.reduce((users, user) => {
+      let userObj = (users[user.userID] ? users[user.userID] : {total: 0, count: 0});
+      userObj.total += user.sleepQuality;
+      userObj.count++;
+      users[user.userID] = userObj;
+      return users;
+    }, {});
+    return Object.keys(userTotals).map(user => {
+      return userTotals[user].total / userTotals[user].count
+    });
   }
 };
 

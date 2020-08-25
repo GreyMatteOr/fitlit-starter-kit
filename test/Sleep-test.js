@@ -266,13 +266,27 @@ describe('Sleep', function() {
     })
   });
 
-  describe.only('getAverageQualityAll()', function() {
-    it('should return the average sleep quality for all users', function() {
-      expect(sleep.getAverageQualityAll()).to.equal(48.5 / 14);
+  describe('getAverageQualityAll()', function() {
+    it('should return an array of the average sleep quality for each users', function() {
+      let averages = sleep.getAverageQualityAll();
+      expect(averages[0]).to.be.closeTo(23.8 / 7, .0001);
+      expect(averages[1]).to.be.closeTo(24.7 / 7, .0001);
     });
 
-    it('should return 0 if there are no users', function() {
-      sleep = new Sleep([]);      expect(sleep.getAverageQualityAll()).to.equal(0);
+    it('should return an empty array if there are no users', function() {
+      sleep = new Sleep([]);      expect(sleep.getAverageQualityAll()).to.deep.equal([]);
     });
   });
+
+  describe.skip('findHighQualityUsers()', function() {
+    it('should return an array of users that have an average sleep quality of 3 or higher', function () {
+      expect(sleep.findHighQualityUsers()).to.deep.equal([])
+    });
+
+    it('', function() {
+      console.log(sleep.getWeeklyQuality("2019/06/21", 1));
+      console.log(sleep.getWeeklyQuality("2019/06/21", 2));
+    })
+  });
+
 });
