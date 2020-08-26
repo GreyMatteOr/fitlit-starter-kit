@@ -1,5 +1,6 @@
 let greeting = document.querySelector('h1');
 const users = new UserRepository(userData);
+const hydration = new Hydration(hydrationData);
 window.onload = onLoad
 
 function onLoad () {
@@ -9,9 +10,8 @@ function onLoad () {
 }
 
 function getRandomUser() {
-  let randomIndex = Math.floor(Math.random() * users.data.length)
-  let hydration = new Hydration(hydrationData.filter(data => data.userID === users.data[randomIndex].id));
-  return new User(users.data[randomIndex], hydration);
+  let randomIndex = Math.floor(Math.random() * users.data.length);
+  return new User(users.data[randomIndex]);
 }
 
 function displayStepGoalMessage(user) {
@@ -21,9 +21,9 @@ function displayStepGoalMessage(user) {
 }
 
 function displayHydration(user) {
-  let lastDay = user.getLastDay();
-  let dailyHydration = user.hydration.findOuncesWaterOfDay(lastDay);
-  let averageHydrationOverLatestWeek = user.hydration.findOuncesWaterOfWeekBefore(lastDay);
+  let lastDay = '2019/09/22'
+  let dailyHydration = hydration.findOuncesWaterOfDay(lastDay, user.id);
+  let averageHydrationOverLatestWeek = hydration.findOuncesWaterOfWeekBefore(lastDay, user.id);
   averageHydrationOverLatestWeek.pop();
   let message = '';
   averageHydrationOverLatestWeek.forEach((ounces, daysAgo) => message = `
