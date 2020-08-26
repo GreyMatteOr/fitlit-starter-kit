@@ -120,6 +120,24 @@ class Sleep {
     });
     return output;
   }
+
+  getBestSleepDay() {
+    let data = this.data.reduce((currentHighest, contender) => {
+      let currentProduct = currentHighest.sleepQuality * currentHighest.hoursSlept;
+      let contenderProduct = contender.sleepQuality * contender.hoursSlept;
+      if (contenderProduct > currentProduct) currentHighest = contender;
+      else if (contenderProduct === currentProduct) {
+        let contenderYearMonthDay = contender.date.split('/');
+        let highYearMonthDay = currentHighest.date.split('/')
+        let [contYear, contMonth, contDay] =  contenderYearMonthDay.map(time => parseInt(time));
+        let [highYear, highMonth, highDay] = highYearMonthDay.map(time => parseInt(time));
+        let check = contYear - highYear || contMonth - highMonth || contDay - highDay;
+        currentHighest = (check >= 0 ? currentHighest : contender);
+      }
+      return currentHighest;
+    });
+    return data;
+  }
 };
 
 module.exports = Sleep;

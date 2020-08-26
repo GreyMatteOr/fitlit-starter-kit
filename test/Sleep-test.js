@@ -329,4 +329,33 @@ describe('Sleep', function() {
       expect(sleep.getHighestOnDay(date)).to.deep.equal([]);
     });
   });
+
+  describe('getBestSleepDay()', function() {
+    it('should return an object with data about the best night sleep ever achieved', function() {
+      let data = {
+        "userID": 1,
+        "date": "2019/06/16",
+        "hoursSlept": 10.8,
+        "sleepQuality": 4.7
+      }
+      expect(sleep.getBestSleepDay()).to.be.deep.equal(data);
+    })
+
+    it('should return the first, chronologically, in case of a tie', function() {
+      let dataWinTie = {
+        "userID": 1,
+        "date": "2019/06/16",
+        "hoursSlept": 10.8,
+        "sleepQuality": 4.7
+      }
+      let dataFailTie = {
+        "userID": 1,
+        "date": "2019/06/17",
+        "hoursSlept": 10.8,
+        "sleepQuality": 4.7
+      }
+      sleepUserData.push(dataFailTie);
+      expect(sleep.getBestSleepDay()).to.be.deep.equal(dataWinTie);
+    })
+  })
 });
