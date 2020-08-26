@@ -12,7 +12,10 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
-    "mocha": "^7.1.2"
+    "mocha": "^7.1.2",
+    "date-arithmetic": "^4.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "date-arithmetic": "^4.1.0"
+  }
 }

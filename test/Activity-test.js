@@ -1,5 +1,7 @@
 const chai = require("chai");
 const expect = chai.expect;
+const dateMath = require('date-arithmetic');
+
 
 const Activity = require('../src/Activity');
 
@@ -134,7 +136,7 @@ describe('Activity', function() {
         "flightsOfStairs": 32
       }
     ];
-    date = '2019/06/21';
+    date = new Date(2019, 06, 21);
     activity = new Activity(userData);
   });
 
@@ -160,10 +162,23 @@ describe('Activity', function() {
     });
 
     it(`should return null if the day doesn't exist for the user`, function() {
-      expect(activity.getMilesWalked('2020/06/21', user1)).to.equal(null);
+      expect(activity.getMilesWalked(new Date(2020, 06, 21), user1)).to.equal(null);
 
       let badUser = {userID: 51}
       expect(activity.getMilesWalked(date, badUser)).to.equal(null);
+    });
+  });
+
+  describe('getMinutesActive()', function() {
+    it('should return the minutes active for a specific user for a given day', function() {
+      expect(activity.getMinutesActive(date, user1)).to.equal(27);
+    });
+
+    it(`should return null if the day doesn't exist for the user`, function() {
+      expect(activity.getMinutesActive(new Date(2020, 06, 21), user1)).to.equal(null);
+
+      let badUser = {userID: 51}
+      expect(activity.getMinutesActive(date, badUser)).to.equal(null)
     });
   });
 });
