@@ -1,14 +1,11 @@
 class Sleep {
   constructor(sleepUserData) {
-
-    // current assumptions:
-    // Only one users sleep dataOnData//
-    // It's sorted chronologically by day with no gaps
     this.data = sleepUserData;
-
-    // new implementation:
-    // It's all users
-    // Sorted by user, then chronologically by day with no gaps
+    this.uniqueIDs = this.data.reduce((userIDs, data) => {
+      userIDs.add(data.userID);
+      return userIDs;
+    }, new Set());
+    this.uniqueIDs = Array.from(this.uniqueIDs);
   };
 
   getUserData(id) {
@@ -91,6 +88,25 @@ class Sleep {
     return Object.keys(userTotals).map(user => {
       return userTotals[user].total / userTotals[user].count
     });
+  }
+
+  findHighQualityUsers(date) {
+    let userQuality = this.uniqueIDs.map((id) => {
+      return this.getWeeklyQuality(date, id);
+    });
+
+    let weeklyAverages = userQuality.map((week) => {
+      let weeklyTotal = week.reduce((totalQuality, qualityOfSleep) => {
+        return totalQuality + qualityOfSleep;
+      }, 0);
+      return weeklyTotal / week.length;
+    });
+
+    let output = [];
+    this.uniqueIDs.forEach((id, i) => {
+      if(weeklyAverages[i] >= 3) output.push(id);
+    });
+    return output;
   }
 };
 

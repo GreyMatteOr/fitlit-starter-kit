@@ -278,15 +278,27 @@ describe('Sleep', function() {
     });
   });
 
-  describe.skip('findHighQualityUsers()', function() {
-    it('should return an array of users that have an average sleep quality of 3 or higher', function () {
-      expect(sleep.findHighQualityUsers()).to.deep.equal([])
+  describe('findHighQualityUsers()', function() {
+    it('should return an array of userIDs whose corresponding users have an average sleep quality of 3 or higher', function () {
+      sleepUserData.push({
+        "userID": 3,
+        "date": "2019/06/21",
+        "hoursSlept": 7,
+        "sleepQuality": 2.9
+      });
+      sleep = new Sleep(sleepUserData);
+      let date = "2019/06/21"
+      expect(sleep.findHighQualityUsers(date)).to.deep.equal([1, 2])
     });
 
-    it('', function() {
-      console.log(sleep.getWeeklyQuality("2019/06/21", 1));
-      console.log(sleep.getWeeklyQuality("2019/06/21", 2));
-    })
+    it('should return an empty array if there are no users', function() {
+      sleep = new Sleep([]);
+      let date = "2019/06/21"
+      expect(sleep.findHighQualityUsers(date)).to.deep.equal([]);
+    });
   });
 
+  describe('getHighestOnDay()', function() {
+
+  });
 });
