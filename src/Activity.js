@@ -26,14 +26,29 @@ class Activity {
     return steps * strideLength / 5280;
   };
 
-  getMinutesActive(date, user) {
+  getMinutesActive(date, id) {
     let day = this.data.find((datum) => {
-      return dateMath.eq(datum.date, date) && datum.userID === user.id;
+      return dateMath.eq(datum.date, date) && datum.userID === id;
     });
     if (day === undefined) return null;
     return day.minutesActive;
   }
 
+  getAverageActivityOverWeek(weekStart, weekEnd, id) {
+    let userData = this.data.filter(datum => {
+      let diffFromStart = dateMath.diff(datum.date, weekStart, 'day', false);
+      let diffFromEnd = dateMath.diff(datum.date, weekEnd, 'day', false);
+      console.log(diffFromStart, diffFromEnd, datum)
+      return datum.userID === id &&
+             Math.abs(diffFromStart) <= 6 &&
+             Math.abs(diffFromEnd) <= 6;
+    });
+    // console.log(userData)
+    let totalMinutes = userData.reduce((sumActive, curr, i, arr) => {
+      return sumActive + curr.minutesActive;
+    }, 0);
+    return totalMinutes / userData.length
+  }
 }
 
 if (typeof(module) !== undefined) {

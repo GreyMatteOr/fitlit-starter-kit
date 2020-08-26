@@ -65,9 +65,14 @@ describe('UserRepository', function() {
     });
   });
 
+<<<<<<< Updated upstream
   describe('getUser()', function() {
     it('should be able to return a user object', function() {
       expect(userRepository.getUser(1)).to.equal(userData[0]);
+=======
+    it('should have a hydration property', function() {
+      expect(userRepository).to.have.property('sleep');
+>>>>>>> Stashed changes
     });
 
     it('should not return a user if there is no match', function() {

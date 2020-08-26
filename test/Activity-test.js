@@ -171,7 +171,7 @@ describe('Activity', function() {
 
   describe('getMinutesActive()', function() {
     it('should return the minutes active for a specific user for a given day', function() {
-      expect(activity.getMinutesActive(date, user1)).to.equal(27);
+      expect(activity.getMinutesActive(date, user1.id)).to.equal(27);
     });
 
     it(`should return null if the day doesn't exist for the user`, function() {
@@ -179,6 +179,20 @@ describe('Activity', function() {
 
       let badUser = {userID: 51}
       expect(activity.getMinutesActive(date, badUser)).to.equal(null)
+    });
+  });
+
+  describe.only('getAverageActivityOverWeek()', function() {
+    it('should return the average number of minutes of activity', function() {
+      weekStart = new Date(2019, 06, 15);
+      weekEnd = new Date(2019, 06, 21);
+      expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(664 / 7);
+    });
+
+    it(`should not include any days that don't have data in the calculation`, function() {
+      weekStart = new Date(2019, 06, 14);
+      weekEnd = new Date(2019, 06, 20);
+      expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(637 / 6);
     });
   });
 });
