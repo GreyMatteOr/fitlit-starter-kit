@@ -140,4 +140,6 @@ class Sleep {
   }
 };
 
-module.exports = Sleep;
+if (typeof module !== 'undefined') {
+  module.exports = Sleep;
+}
