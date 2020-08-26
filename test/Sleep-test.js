@@ -299,6 +299,34 @@ describe('Sleep', function() {
   });
 
   describe('getHighestOnDay()', function() {
+    it('should return an array of userIDs whose corresponding users have the maximum sleep quantity on a given date', function () {
+      sleepUserData.push({
+        "userID": 3,
+        "date": "2019/06/21",
+        "hoursSlept": 7,
+        "sleepQuality": 2.9
+      });
+      sleep = new Sleep(sleepUserData);
+      let date = "2019/06/21"
+      expect(sleep.getHighestOnDay(date)).to.deep.equal([2]);
+    });
 
+    it('should be able to return more than one user', function () {
+      sleepUserData.push({
+        "userID": 3,
+        "date": "2019/06/21",
+        "hoursSlept": 9.2,
+        "sleepQuality": 2.9
+      });
+      sleep = new Sleep(sleepUserData);
+      let date = "2019/06/21"
+      expect(sleep.getHighestOnDay(date)).to.deep.equal([2, 3]);
+    });
+
+    it('should return an empty array if there are no users', function() {
+      sleep = new Sleep([]);
+      let date = "2019/06/21"
+      expect(sleep.getHighestOnDay(date)).to.deep.equal([]);
+    });
   });
 });

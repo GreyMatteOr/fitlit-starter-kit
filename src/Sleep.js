@@ -108,6 +108,18 @@ class Sleep {
     });
     return output;
   }
+
+  getHighestOnDay(date) {
+    let quantitiesSleep = this.uniqueIDs.map((id) => {
+      return this.getHoursSleptOnDate(date, id);
+    })
+    let maximumSleep = Math.max(...quantitiesSleep);
+    let output = [];
+    this.uniqueIDs.forEach((id, i) => {
+      if(quantitiesSleep[i] === maximumSleep) output.push(id);
+    });
+    return output;
+  }
 };
 
 module.exports = Sleep;
