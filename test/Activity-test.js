@@ -5,8 +5,35 @@ const Activity = require('../src/Activity');
 
 describe('Activity', function() {
 
-  let activity, userData;
+  let activity, userData, user1, user2;
   beforeEach(function() {
+    user1 = {
+      "id": 1,
+      "name": "Luisa Hane",
+      "address": "15195 Nakia Tunnel, Erdmanport VA 19901-1697",
+      "email": "Diana.Hayes1@hotmail.com",
+      "strideLength": 4.3,
+      "dailyStepGoal": 10000,
+      "friends": [
+        16,
+        4,
+        8
+      ]
+    };
+    user2 = {
+      "id": 2,
+      "name": "Jarvis Considine",
+      "address": "30086 Kathryn Port, Ciceroland NE 07273",
+      "email": "Dimitri.Bechtelar11@gmail.com",
+      "strideLength": 4.5,
+      "dailyStepGoal": 5000,
+      "friends": [
+        9,
+        18,
+        24,
+        19
+      ]
+    };
     userData = [
         {
         "userID": 1,
@@ -107,7 +134,7 @@ describe('Activity', function() {
         "flightsOfStairs": 32
       }
     ];
-    dateEnd = '2019/06/21';
+    date = '2019/06/21';
     activity = new Activity(userData);
   });
 
@@ -123,6 +150,20 @@ describe('Activity', function() {
 
     it('should hold userData', function() {
       expect(activity.data).to.deep.equal(userData);
+    });
+  });
+
+  describe('getMilesWalked()', function() {
+    it('should return the number of miles a user walked on a given day', function() {
+      let feetWalked = user1.strideLength * userData[12].numSteps;
+      expect(activity.getMilesWalked(date, user1)).to.equal(feetWalked / 5280);
+    });
+
+    it(`should return null if the day doesn't exist for the user`, function() {
+      expect(activity.getMilesWalked('2020/06/21', user1)).to.equal(null);
+
+      let badUser = {userID: 51}
+      expect(activity.getMilesWalked(date, badUser)).to.equal(null);
     });
   });
 });
