@@ -1,17 +1,19 @@
 let greeting = document.querySelector('h1');
 const users = new UserRepository(userData);
+const hydration = new Hydration(hydrationData);
+const sleep = new Sleep(sleepData);
 window.onload = onLoad
 
 function onLoad () {
   let randomUser = getRandomUser();
   displayStepGoalMessage(randomUser);
   displayHydration(randomUser);
+  displaySleep(randomUser);
 }
 
 function getRandomUser() {
-  let randomIndex = Math.floor(Math.random() * users.data.length)
-  let hydration = new Hydration(hydrationData.filter(data => data.userID === users.data[randomIndex].id));
-  return new User(users.data[randomIndex], hydration);
+  let randomIndex = Math.floor(Math.random() * users.data.length);
+  return new User(users.data[randomIndex]);
 }
 
 function displayStepGoalMessage(user) {
@@ -21,14 +23,40 @@ function displayStepGoalMessage(user) {
 }
 
 function displayHydration(user) {
-  let lastDay = user.getLastDay();
-  let dailyHydration = user.hydration.findOuncesWaterOfDay(lastDay);
-  let averageHydrationOverLatestWeek = user.hydration.findOuncesWaterOfWeekBefore(lastDay);
+  let lastDay = '2019/09/22';
+  let dailyHydration = hydration.findOuncesWaterOfDay(lastDay, user.id);
+  let averageHydrationOverLatestWeek = hydration.findOuncesWaterOfWeekBefore(lastDay, user.id);
   averageHydrationOverLatestWeek.pop();
   let message = '';
   averageHydrationOverLatestWeek.forEach((ounces, daysAgo) => message = `
     ${6 - daysAgo} days ago you drank ${ounces} ounces of water` + message);
   message = `
-    Your hydration for today is ${dailyHydration}.` + message;
+    Your hydration for today, ${lastDay}, is ${dailyHydration} ounces.` + message;
   greeting.innerText += message;
 };
+
+function displaySleep(user) {
+  let lastDay = '2019/09/22';
+  let recentSleepHours = sleep.getHoursSleptOnDate(lastDay, user.id);
+  let recentSleepQuality = sleep.getQualityOnDate(lastDay, user.id);
+  let adjective = (recentSleepQuality >= 4 ? 'very deeply' : (recentSleepQuality >= 3 ? 'deeply' : (recentSleepQuality >= 2 ? 'alright' : 'poorly')));
+  greeting.innerText += `\n${user.getFirstName()} slept ${adjective} for ${recentSleepHours} hours`;
+  let latestWeekSleepHours = sleep.getWeeklyQuantity(lastDay, user.id);
+  let latestWeekSleepQuality = sleep.getWeeklyQuality(lastDay, user.id);
+  latestWeekSleepHours.reverse();
+  latestWeekSleepQuality.reverse();
+  latestWeekSleepHours.shift();
+  latestWeekSleepQuality.shift();
+  // for(let day = 0; day < latestWeekSleepHours.length; day++) {
+  //   latestWeekSleepHours[day]
+  //   latestWeekSleepQuality[day]
+  // }
+  latestWeekSleepHours.forEach((quantity, day) => {
+    const quality = latestWeekSleepQuality[day];
+    greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
+  })
+  let averageHours = sleep.calculateAverage(user.id);
+  let averageQuality = sleep.calculateAverageQuality(user.id);
+  adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
+  greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
+}

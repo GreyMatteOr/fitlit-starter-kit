@@ -7,7 +7,6 @@ class User {
     this.strideLength = data.strideLength;
     this.dailyStepGoal = data.dailyStepGoal;
     this.friends = data.friends;
-    this.hydration = hydration;
   }
 
   getFirstName() {
@@ -15,11 +14,6 @@ class User {
       return '';
     }
     return this.name.split(' ')[0];
-  }
-
-  getLastDay() {
-  console.log(this.hydration.data);
-    return this.hydration.data[this.hydration.data.length - 1].date;
   }
 }
 

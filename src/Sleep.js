@@ -12,6 +12,7 @@ class Sleep {
     let userData = this.data.filter((sleepData) => sleepData.userID === id);
     return userData;
   }
+   
   calculateAverage(id) {
     let userData = this.getUserData(id);
     return this.calculateDetailAverage('hoursSlept', userData);
@@ -140,4 +141,6 @@ class Sleep {
   }
 };
 
-module.exports = Sleep;
+if (typeof module !== 'undefined') {
+  module.exports = Sleep;
+}
