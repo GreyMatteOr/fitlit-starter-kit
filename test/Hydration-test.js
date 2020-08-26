@@ -13,12 +13,27 @@ describe('Hydration', function() {
       "numOunces": 37
     },
     {
+      "userID": 2,
+      "date": "2019/06/15",
+      "numOunces": 75
+    },
+    {
       "userID": 1,
       "date": "2019/06/16",
       "numOunces": 69
     },
     {
+      "userID": 2,
+      "date": "2019/06/16",
+      "numOunces": 91
+    },
+    {
       "userID": 1,
+      "date": "2019/06/17",
+      "numOunces": 96
+    },
+    {
+      "userID": 2,
       "date": "2019/06/17",
       "numOunces": 96
     },
@@ -28,9 +43,19 @@ describe('Hydration', function() {
       "numOunces": 96
     },
     {
+      "userID": 2,
+      "date": "2019/06/18",
+      "numOunces": 70
+    },
+    {
       "userID": 1,
       "date": "2019/06/19",
       "numOunces": 28
+    },
+    {
+      "userID": 2,
+      "date": "2019/06/19",
+      "numOunces": 76
     },
     {
       "userID": 1,
@@ -38,10 +63,21 @@ describe('Hydration', function() {
       "numOunces": 82
     },
     {
+      "userID": 2,
+      "date": "2019/06/20",
+      "numOunces": 71
+    },
+    {
       "userID": 1,
       "date": "2019/06/21",
       "numOunces": 99
-    }]
+    },
+    {
+      "userID": 2,
+      "date": "2019/06/21",
+      "numOunces": 27
+    }
+  ]
     hydration = new Hydration(hydrationData);
   });
 
@@ -62,7 +98,7 @@ describe('Hydration', function() {
 
   describe('calculateAverageHydration', function() {
     it('should return the average daily consumption', function() {
-      expect(hydration.calculateAverageHydration()).to.equal(507 / 7);
+      expect(hydration.calculateAverageHydration(1)).to.equal(507 / 7);
     });
 
     it('should return 0 when there is no Hydration data', function() {
@@ -74,8 +110,16 @@ describe('Hydration', function() {
 
   describe('findOuncesWaterOfDay()', function() {
     it('should return the ounces of water drunk for a given date', function() {
-      let date = '2019/06/17'
-      expect(hydration.findOuncesWaterOfDay(date)).to.equal(96);
+      let date1 = '2019/06/17'
+      let date2 = '2019/06/21'
+      expect(hydration.findOuncesWaterOfDay(date1, 1)).to.equal(96);
+      expect(hydration.findOuncesWaterOfDay(date2, 1)).to.equal(99);
+    });
+
+    it('should still return the ounces of water drunk for a any user for a specific date', function() {
+      let date = '2019/06/18'
+      expect(hydration.findOuncesWaterOfDay(date, 1)).to.equal(96);
+      expect(hydration.findOuncesWaterOfDay(date, 2)).to.equal(70);
     });
 
     it(`should return 0 if it can't find the day`, function() {
@@ -84,15 +128,20 @@ describe('Hydration', function() {
     });
   });
 
-  describe('findOuncesWaterOfDay()', function() {
+  describe('findOuncesWaterOfWeekBefore()', function() {
     it('should return an Array the ounces of water drunk for a given date', function() {
       let date = '2019/06/21'
-      expect(hydration.findOuncesWaterOfWeekBefore(date)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
+      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
     });
 
     it(`shouldn't return an entry in the array if it can't find the day`, function() {
       let date = '2019/06/20'
-      expect(hydration.findOuncesWaterOfWeekBefore(date)).to.deep.equal([37, 69, 96, 96, 28, 82]);
+      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 37, 69, 96, 96, 28, 82]);
+    });
+
+    it('should return all 0s if a date is not identified', function() {
+      let date = '2068/06/23'
+      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 0, 0, 0, 0, 0, 0])
     });
   });
 });
