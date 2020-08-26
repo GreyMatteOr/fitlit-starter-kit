@@ -1,10 +1,10 @@
 class Hydration{
   constructor(data) {
-    data.sort((h1, h2) => {
-      let [year1, month1, day1] = h1.date.split('/');
-      let [year2, month2, day2] = h2.date.split('/');
-      return year1 - year2 || month1 - month2 || day1 - day2;
-    })
+    // data.sort((h1, h2) => {
+    //   let [year1, month1, day1] = h1.date.split('/');
+    //   let [year2, month2, day2] = h2.date.split('/');
+    //   return year1 - year2 || month1 - month2 || day1 - day2;
+    // })
     this.data = data;
   }
 
