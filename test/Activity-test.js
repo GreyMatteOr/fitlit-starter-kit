@@ -237,7 +237,7 @@ describe('Activity', function() {
     });
   });
 
-  describe.only('getDaysExceeded()', function(){
+  describe('getDaysExceeded()', function(){
     it('should return all the days a given user has exceeded their step goal', function() {
       let date1 = {
         "userID": 1,
@@ -261,4 +261,16 @@ describe('Activity', function() {
       expect(activity.getDaysExceeded(user1)).to.deep.equal([])
     });
   })
+
+  describe.only('getRecordStairs()', function() {
+    it('should return the most stairs climbed in a single day for a given user', function() {
+      expect(activity.getRecordStairs(user1)).to.equal(33);
+      expect(activity.getRecordStairs(user2)).to.equal(37);
+    });
+
+    it('should return 0 if no data is available', function() {
+      let user3 = {id: 3};
+      expect(activity.getRecordStairs(user3)).to.equal(0);
+    });
+  });
 });

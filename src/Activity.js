@@ -61,6 +61,12 @@ class Activity {
     })
     return daysExceeded || [];
   };
+
+  getRecordStairs(user) {
+    return this.data.reduce((record, contender) => {
+      return (contender.userID === user.id ? Math.max(record, contender.flightsOfStairs) : record);
+    }, 0);
+  }
 }
 
 if (typeof(module) !== undefined) {
