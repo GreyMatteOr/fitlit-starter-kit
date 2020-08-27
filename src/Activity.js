@@ -48,12 +48,19 @@ class Activity {
     return totalMinutes / userData.length
   }
 
-  metGoal(user, date) {
-    let day = this.data.find(datum => {
-      return dateMath.eq(datum.date, date) && datum.userID === user.id;
-    });
-    return (day ? day.numSteps >= user.dailyStepGoal : null);
-  }
+  exceededGoal(user, day) {
+    if( user === undefined || day === undefined) return null;
+    let isRightUser = user.id === day.userID;
+    let exceededGoal = day.numSteps > user.dailyStepGoal
+    return isRightUser && exceededGoal;
+  };
+
+  getDaysExceeded(user) {
+    let daysExceeded = this.data.filter((datum) => {
+      return this.exceededGoal(user, datum)
+    })
+    return daysExceeded || [];
+  };
 }
 
 if (typeof(module) !== undefined) {

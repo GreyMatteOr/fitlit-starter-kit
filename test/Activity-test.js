@@ -196,25 +196,69 @@ describe('Activity', function() {
     });
   });
 
-  describe.only('metGoal()', function() {
-    it('should return true if a given user exceeded or met their step goal for a given day', function() {
-      date = new Date(2019, 06, 17);
-      expect(activity.metGoal(user1, date)).to.equal(true);
+  describe('exceededGoal()', function() {
+    it('should return true if a given user exceeded their step goal for a given day', function() {
+      day = {
+        "userID": 1,
+        "date": "2019/06/17",
+        "numSteps": 11374,
+        "minutesActive": 213,
+        "flightsOfStairs": 13
+      };
+      expect(activity.exceededGoal(user1, day)).to.equal(true);
     });
 
-    it(`should return false if a given user didn't meet their step goal for a given day`, function() {
-      expect(activity.metGoal(user1, date)).to.equal(false);
+    it(`should return false if a given user didn't exceed their step goal for a given day`, function() {
+      day = {
+        "userID": 1,
+        "date": "2019/06/17",
+        "numSteps": 10000,
+        "minutesActive": 213,
+        "flightsOfStairs": 13
+      };
+      expect(activity.exceededGoal(user1, day)).to.equal(false);
     });
 
     it(`should return null if the user doesn't have any data for the given date`, function() {
-      date = new Date(2020, 06, 17);
-      expect(activity.metGoal(user1, date)).to.equal(null);
+      day = undefined;
+      expect(activity.exceededGoal(user1, day)).to.equal(null);
     });
 
     it(`should return null if the user doesn't exist`, function() {
-      date = new Date(2020, 06, 17);
-      user1 = {id: 3};
-      expect(activity.metGoal(user1, date)).to.equal(null);
+      day = {
+        "userID": 1,
+        "date": "2019/06/17",
+        "numSteps": 11374,
+        "minutesActive": 213,
+        "flightsOfStairs": 13
+      };
+      user1 = undefined;
+      expect(activity.exceededGoal(user1, day)).to.equal(null);
     });
   });
+
+  describe.only('getDaysExceeded()', function(){
+    it('should return all the days a given user has exceeded their step goal', function() {
+      let date1 = {
+        "userID": 1,
+        "date": new Date(2019, 06, 17),
+        "numSteps": 11374,
+        "minutesActive": 213,
+        "flightsOfStairs": 13
+      };
+      let date2 = {
+        "userID": 1,
+        "date": new Date(2019, 06, 20),
+        "numSteps": 11652,
+        "minutesActive": 20,
+        "flightsOfStairs": 24
+      };
+      expect(activity.getDaysExceeded(user1)).to.deep.equal([date1, date2])
+    });
+
+    it('should return an empty array if there are no days that a given user has exceeded their step goal', function() {
+      let user1 = {id: 1, dailyStepGoal: 20000}
+      expect(activity.getDaysExceeded(user1)).to.deep.equal([])
+    });
+  })
 });
