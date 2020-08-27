@@ -182,7 +182,7 @@ describe('Activity', function() {
     });
   });
 
-  describe.only('getAverageActivityOverWeek()', function() {
+  describe('getAverageActivityOverWeek()', function() {
     it('should return the average number of minutes of activity', function() {
       weekStart = new Date(2019, 06, 15);
       weekEnd = new Date(2019, 06, 21);
@@ -193,6 +193,28 @@ describe('Activity', function() {
       weekStart = new Date(2019, 06, 14);
       weekEnd = new Date(2019, 06, 20);
       expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(637 / 6);
+    });
+  });
+
+  describe.only('metGoal()', function() {
+    it('should return true if a given user exceeded or met their step goal for a given day', function() {
+      date = new Date(2019, 06, 17);
+      expect(activity.metGoal(user1, date)).to.equal(true);
+    });
+
+    it(`should return false if a given user didn't meet their step goal for a given day`, function() {
+      expect(activity.metGoal(user1, date)).to.equal(false);
+    });
+
+    it(`should return null if the user doesn't have any data for the given date`, function() {
+      date = new Date(2020, 06, 17);
+      expect(activity.metGoal(user1, date)).to.equal(null);
+    });
+
+    it(`should return null if the user doesn't exist`, function() {
+      date = new Date(2020, 06, 17);
+      user1 = {id: 3};
+      expect(activity.metGoal(user1, date)).to.equal(null);
     });
   });
 });
