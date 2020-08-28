@@ -3,8 +3,11 @@ const dateMath = require('date-arithmetic');
 class Activity {
   constructor(data) {
     this.data = data.map((datum) => {
-      let newDate = datum.date.split('/').map((data) => parseInt(data))
-      datum.date = new Date(...newDate);
+      if(datum.date.__proto__.constructor.name !== 'Date') {
+        let newDate = datum.date.split('/')
+                              .map((data) => parseInt(data));
+        datum.date = new Date(...newDate);
+      }
       return datum;
     });
   };
@@ -66,7 +69,16 @@ class Activity {
     return this.data.reduce((record, contender) => {
       return (contender.userID === user.id ? Math.max(record, contender.flightsOfStairs) : record);
     }, 0);
-  }
+  };
+
+  getMonthlyActivityChampion(beginDate, endDate = dateMath.add(beginDate, 1, 'month')) {
+    return this.data.reduce((record, current) => {
+      let check = record.record;
+      let test = (dateMath.inRange(current.date, beginDate, endDate) ? Math.max(record.record, current.minutesActive) : record.record);
+      return (check === test ? record : {userID: current.userID, record: current.minutesActive});
+    }, {userID: null, record: 0});
+  };
+
 }
 
 if (typeof(module) !== undefined) {

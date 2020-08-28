@@ -262,7 +262,7 @@ describe('Activity', function() {
     });
   })
 
-  describe.only('getRecordStairs()', function() {
+  describe('getRecordStairs()', function() {
     it('should return the most stairs climbed in a single day for a given user', function() {
       expect(activity.getRecordStairs(user1)).to.equal(33);
       expect(activity.getRecordStairs(user2)).to.equal(37);
@@ -273,4 +273,29 @@ describe('Activity', function() {
       expect(activity.getRecordStairs(user3)).to.equal(0);
     });
   });
+
+  // describe.only('getAverageStairsClimbedOnDate()')
+  describe.only('getMonthlyActivityChampion()', function() {
+    let activity2, june, july;
+    beforeEach(function() {
+      let month2 = activity.data.map((dataObj) => {
+        let newObj = {
+          userID: dataObj.userID,
+          date: dateMath.add(dataObj.date, 1, 'month'),
+          numSteps: dataObj.numSteps + 1,
+          minutesActive: dataObj.minutesActive + 1,
+          flightsOfStairs: dataObj.flightsOfStairs + 1
+        }
+        return newObj;
+      });
+      userData = userData.concat(month2)
+      activity2 = new Activity(userData);
+      june = new Date(2019, 06, 01)
+      july = new Date(2019, 07, 01)
+    });
+    it('should identify the user day that had the most active for a single day in a given month and return the user id and how many mintues they had', function() {
+      expect(activity2.getMonthlyActivityChampion(june)).to.deep.equal({userID: 2, record: 287})
+      expect(activity2.getMonthlyActivityChampion(july)).to.deep.equal({userID: 2, record: 288})
+    });
+  })
 });
