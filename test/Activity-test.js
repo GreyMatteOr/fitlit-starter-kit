@@ -292,10 +292,15 @@ describe('Activity', function() {
       activity2 = new Activity(userData);
       june = new Date(2019, 06, 01)
       july = new Date(2019, 07, 01)
+      futureJuly = new Date(2020, 07, 01)
     });
     it('should identify the user day that had the most active for a single day in a given month and return the user id and how many mintues they had', function() {
       expect(activity2.getMonthlyActivityChampion(june)).to.deep.equal({userID: 2, record: 287})
       expect(activity2.getMonthlyActivityChampion(july)).to.deep.equal({userID: 2, record: 288})
+    });
+
+    it('should return null if the monthly activity record is 0', function() {
+      expect(activity2.getMonthlyActivityChampion(futureJuly)).to.deep.equal({userID: null, record: 0})
     });
   })
 });
