@@ -1,12 +1,12 @@
-const dateMath = require('date-arithmetic');
+// if( typeof(module) !== undefined) {
+//   const moment = require('moment');
+// }
 
 class Activity {
   constructor(data) {
     this.data = data.map((datum) => {
       if(datum.date.__proto__.constructor.name !== 'Date') {
-        let newDate = datum.date.split('/')
-                              .map((data) => parseInt(data));
-        datum.date = new Date(...newDate);
+        datum.date = moment(datum.date, 'YYYY/MM/DD');
       }
       return datum;
     });
@@ -19,9 +19,18 @@ class Activity {
     return userData;
   };
 
+  getStepsTaken(date, id) {
+
+    let day = this.data.find((datum) => {
+      return id === datum.userID && moment(date, 'YYYY/MM/DD').isSame(datum.date);
+    });
+    console.log(day)
+    return day.numSteps;
+  }
+
   getMilesWalked(date, user) {
     let day = this.data.find((datum) => {
-      return dateMath.eq(datum.date, date) && datum.userID === user.id;
+      return moment(datum.date).isSame(date) && datum.userID === user.id;
     });
     if (day === undefined) return null;
     let steps = day.numSteps;
@@ -31,19 +40,17 @@ class Activity {
 
   getMinutesActive(date, id) {
     let day = this.data.find((datum) => {
-      return dateMath.eq(datum.date, date) && datum.userID === id;
+      return moment(datum.date).isSame(date) && datum.userID === id;
     });
     if (day === undefined) return null;
     return day.minutesActive;
   }
 
   getAverageActivityOverWeek(weekStart, weekEnd, id) {
+    weekStart = moment(weekStart).subtract(1, 's');
+    weekEnd = moment(weekEnd).add(1, 's');
     let userData = this.data.filter(datum => {
-      let diffFromStart = dateMath.diff(datum.date, weekStart, 'day', false);
-      let diffFromEnd = dateMath.diff(datum.date, weekEnd, 'day', false);
-      return datum.userID === id &&
-             Math.abs(diffFromStart) <= 6 &&
-             Math.abs(diffFromEnd) <= 6;
+      return datum.userID === id && moment(datum.date).isBetween(weekStart, weekEnd);
     });
     let totalMinutes = userData.reduce((sumActive, curr, i, arr) => {
       return sumActive + curr.minutesActive;
@@ -71,16 +78,16 @@ class Activity {
     }, 0);
   };
 
-  getMonthlyActivityChampion(beginDate, endDate = dateMath.add(beginDate, 1, 'month')) {
+  getMonthlyActivityChampion(beginDate, endDate = moment(beginDate).add(1, 'M')) {
     return this.data.reduce((record, current) => {
       let check = record.record;
-      let test = (dateMath.inRange(current.date, beginDate, endDate) ? Math.max(record.record, current.minutesActive) : record.record);
+      let test = (moment(current.date).isBetween(beginDate, endDate) ? Math.max(record.record, current.minutesActive) : record.record);
       return (check === test ? record : {userID: current.userID, record: current.minutesActive});
     }, {userID: null, record: 0});
   };
 
 }
 
-if (typeof(module) !== undefined) {
-  module.exports = Activity;
-}
+// if (typeof(module  ) !== undefined) {
+//   module.exports = Activity;
+// }

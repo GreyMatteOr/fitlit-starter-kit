@@ -16,6 +16,8 @@
     "date-arithmetic": "^4.1.0"
   },
   "dependencies": {
-    "date-arithmetic": "^4.1.0"
+    "date-arithmetic": "^4.1.0",
+    "mocha": "^7.1.2",
+    "moment": "^2.27.0"
   }
 }

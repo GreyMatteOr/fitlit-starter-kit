@@ -2,6 +2,7 @@ let greeting = document.querySelector('h1');
 const users = new UserRepository(userData);
 const hydration = new Hydration(hydrationData);
 const sleep = new Sleep(sleepData);
+const activity = new Activity(activityData);
 window.onload = onLoad
 
 function onLoad () {
@@ -9,6 +10,7 @@ function onLoad () {
   displayStepGoalMessage(randomUser);
   displayHydration(randomUser);
   displaySleep(randomUser);
+  displayActivity(randomUser);
 }
 
 function getRandomUser() {
@@ -47,10 +49,6 @@ function displaySleep(user) {
   latestWeekSleepQuality.reverse();
   latestWeekSleepHours.shift();
   latestWeekSleepQuality.shift();
-  // for(let day = 0; day < latestWeekSleepHours.length; day++) {
-  //   latestWeekSleepHours[day]
-  //   latestWeekSleepQuality[day]
-  // }
   latestWeekSleepHours.forEach((quantity, day) => {
     const quality = latestWeekSleepQuality[day];
     greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
@@ -59,4 +57,10 @@ function displaySleep(user) {
   let averageQuality = sleep.calculateAverageQuality(user.id);
   adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
   greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
+}
+
+function displayActivity(user) {
+  let lastDay = '2019/09/22';
+  greeting.innerText += `\n${user.getFirstName()} took ${activity.getStepsTaken(lastDay, user.id)} steps today.`;
+
 }

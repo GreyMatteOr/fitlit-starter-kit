@@ -1,6 +1,6 @@
 const chai = require("chai");
 const expect = chai.expect;
-const dateMath = require('date-arithmetic');
+const moment = require('moment');
 
 
 const Activity = require('../src/Activity');
@@ -136,7 +136,7 @@ describe('Activity', function() {
         "flightsOfStairs": 32
       }
     ];
-    date = new Date(2019, 06, 21);
+    date = moment('2019/06/21', 'YYYY/MM/DD');
     activity = new Activity(userData);
   });
 
@@ -162,7 +162,7 @@ describe('Activity', function() {
     });
 
     it(`should return null if the day doesn't exist for the user`, function() {
-      expect(activity.getMilesWalked(new Date(2020, 06, 21), user1)).to.equal(null);
+      expect(activity.getMilesWalked(moment('2020/06/21', 'YYYY/MM/DD'), user1)).to.equal(null);
 
       let badUser = {userID: 51}
       expect(activity.getMilesWalked(date, badUser)).to.equal(null);
@@ -184,14 +184,14 @@ describe('Activity', function() {
 
   describe('getAverageActivityOverWeek()', function() {
     it('should return the average number of minutes of activity', function() {
-      weekStart = new Date(2019, 06, 15);
-      weekEnd = new Date(2019, 06, 21);
+      weekStart = moment('2019/06/15', 'YYYY/MM/DD');
+      weekEnd = moment('2019/06/21', 'YYYY/MM/DD');
       expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(664 / 7);
     });
 
     it(`should not include any days that don't have data in the calculation`, function() {
-      weekStart = new Date(2019, 06, 14);
-      weekEnd = new Date(2019, 06, 20);
+      weekStart = moment('2019/06/14', 'YYYY/MM/DD');
+      weekEnd = moment('2019/06/20', 'YYYY/MM/DD');
       expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(637 / 6);
     });
   });
@@ -241,14 +241,14 @@ describe('Activity', function() {
     it('should return all the days a given user has exceeded their step goal', function() {
       let date1 = {
         "userID": 1,
-        "date": new Date(2019, 06, 17),
+        "date": moment('2019/06/17', 'YYYY/MM/DD'),
         "numSteps": 11374,
         "minutesActive": 213,
         "flightsOfStairs": 13
       };
       let date2 = {
         "userID": 1,
-        "date": new Date(2019, 06, 20),
+        "date": moment('2019/06/20', 'YYYY/MM/DD'),
         "numSteps": 11652,
         "minutesActive": 20,
         "flightsOfStairs": 24
@@ -274,14 +274,13 @@ describe('Activity', function() {
     });
   });
 
-  // describe.only('getAverageStairsClimbedOnDate()')
-  describe.only('getMonthlyActivityChampion()', function() {
+  describe('getMonthlyActivityChampion()', function() {
     let activity2, june, july;
     beforeEach(function() {
       let month2 = activity.data.map((dataObj) => {
         let newObj = {
           userID: dataObj.userID,
-          date: dateMath.add(dataObj.date, 1, 'month'),
+          date: moment(dataObj.date).add(1, 'M'),
           numSteps: dataObj.numSteps + 1,
           minutesActive: dataObj.minutesActive + 1,
           flightsOfStairs: dataObj.flightsOfStairs + 1
@@ -290,9 +289,9 @@ describe('Activity', function() {
       });
       userData = userData.concat(month2)
       activity2 = new Activity(userData);
-      june = new Date(2019, 06, 01)
-      july = new Date(2019, 07, 01)
-      futureJuly = new Date(2020, 07, 01)
+      june = moment('2019/06/01', 'YYYY/MM/DD')
+      july = moment('2019/07/01', 'YYYY/MM/DD')
+      futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
     });
     it('should identify the user day that had the most active for a single day in a given month and return the user id and how many mintues they had', function() {
       expect(activity2.getMonthlyActivityChampion(june)).to.deep.equal({userID: 2, record: 287})
