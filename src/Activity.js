@@ -86,33 +86,29 @@ class Activity {
     }, {userID: null, record: 0});
   };
 
-  // data accessed to?- input/form
-    // days - array of user activity objects
-  //what is ouput?
-    // average steps overall for the day
-    // add up all user activity object numSteps / day.length
-    // return single number
-  //what methods could be helpful
-    //filter- for day
-    //reduce
+  getAverageStepsOnDay(date) {
+    return this.getAverageStatOnDate('numSteps', date);
+  };
 
-  // break it downtown
-    //pick specified date object
-    // if object date property matched date passed inspect
-    //
-  getOverallAverageStepsOnDay(date) {
+  getAverageMinutesOnDay(date) {
+    return this.getAverageStatOnDate('minutesActive', date);
+  }
+
+  getAverageFlightsOnDay(date) {
+    return this.getAverageStatOnDate('flightsOfStairs', date);
+  }
+
+  getAverageStatOnDate(stat, date) {
     let days = this.data.filter((obj) => {
       return moment(date).isSame(obj.date)
     });
     if(days.length === 0) return 0;
-    let allSteps = days.reduce((total, currentUser) => {
-      total += currentUser.numSteps
+    let sum = days.reduce((total, currentUser) => {
+      total += currentUser[stat]
       return total
     },0);
-    return allSteps / days.length;
-  };
-
-
+    return sum / days.length;
+  }
 }
 
 if (typeof(module  ) !== undefined) {

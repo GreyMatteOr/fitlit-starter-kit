@@ -303,14 +303,36 @@ describe('Activity', function() {
     });
   })
 
-  describe.only('getOverallAverageStepsOnDay', function() {
+  describe.only('getAverageStepsOnDay', function() {
     it('should return the overall average steps for a given day out of all users', function() {
-      expect(activity.getOverallAverageStepsOnDay(date)).to.equal(17327 / 2);
+      expect(activity.getAverageStepsOnDay(date)).to.equal(17327 / 2);
     });
 
     it('should return 0 if the given day has no data', function() {
       futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
-      expect(activity.getOverallAverageStepsOnDay(futureJuly)).to.equal(0);
+      expect(activity.getAverageStepsOnDay(futureJuly)).to.equal(0);
+    });
+  });
+
+  describe.only('getAverageMinutesOnDay', function() {
+    it('should return the overall average steps for a given day out of all users', function() {
+      expect(activity.getAverageMinutesOnDay(date)).to.equal(243 / 2);
+    });
+
+    it('should return 0 if the given day has no data', function() {
+      futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
+      expect(activity.getAverageMinutesOnDay(futureJuly)).to.equal(0);
+    });
+  });
+
+  describe.only('getAverageFlightsOnDay', function() {
+    it('should return the overall average steps for a given day out of all users', function() {
+      expect(activity.getAverageFlightsOnDay(date)).to.equal(46 / 2);
+    });
+
+    it('should return 0 if the given day has no data', function() {
+      futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
+      expect(activity.getAverageFlightsOnDay(futureJuly)).to.equal(0);
     });
   });
 });
