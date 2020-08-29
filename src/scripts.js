@@ -62,5 +62,6 @@ function displaySleep(user) {
 function displayActivity(user) {
   let lastDay = '2019/09/22';
   greeting.innerText += `\n${user.getFirstName()} took ${activity.getStepsTaken(lastDay, user.id)} steps today.`;
-
+  greeting.innerText += `\n${user.getFirstName()} worked out for ${activity.getMinutesActive(lastDay, user.id)} minutes today!`
+  greeting.innerText += `\n${user.getFirstName()} went  ${activity.getMilesWalked(lastDay, user.id)} mile(s) today!`
 }

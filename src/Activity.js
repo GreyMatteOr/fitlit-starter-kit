@@ -1,12 +1,10 @@
-// if( typeof(module) !== undefined) {
-const moment = require('moment');
-// }
+// const moment = require('moment');
 
 class Activity {
   constructor(data) {
     this.data = data.map((datum) => {
       if(datum.date.__proto__.constructor.name !== 'Date') {
-        datum.date = moment(datum.date, 'YYYY/MM/DD');
+        datum.date = moment(datum.date.replace('-', '/'), 'YYYY-MM-DD');
       }
       return datum;
     });
@@ -20,22 +18,17 @@ class Activity {
   };
 
   getStepsTaken(date, id) {
-
     let day = this.data.find((datum) => {
-      return id === datum.userID && moment(date, 'YYYY/MM/DD').isSame(datum.date);
+      return id === datum.userID && moment(date, 'YYYY-MM-DD').isSame(datum.date);
     });
-    console.log(day)
+    if (day === undefined) return null;
     return day.numSteps;
   }
 
   getMilesWalked(date, user) {
-    let day = this.data.find((datum) => {
-      return moment(datum.date).isSame(date) && datum.userID === user.id;
-    });
-    if (day === undefined) return null;
-    let steps = day.numSteps;
+    let steps = this.getStepsTaken(date, user.id)
     let strideLength = user.strideLength;
-    return steps * strideLength / 5280;
+    return (steps === null ? steps * strideLength / 5280 : null);
   };
 
   getMinutesActive(date, id) {
@@ -111,6 +104,4 @@ class Activity {
   }
 }
 
-if (typeof(module  ) !== undefined) {
-  module.exports = Activity;
-}
+// module.exports = Activity;
