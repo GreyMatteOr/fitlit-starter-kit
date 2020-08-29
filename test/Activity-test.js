@@ -1,6 +1,6 @@
 const chai = require("chai");
 const expect = chai.expect;
-const moment = require('moment');
+const moment = require("moment");
 
 
 const Activity = require('../src/Activity');
@@ -302,4 +302,15 @@ describe('Activity', function() {
       expect(activity2.getMonthlyActivityChampion(futureJuly)).to.deep.equal({userID: null, record: 0})
     });
   })
+
+  describe.only('getOverallAverageStepsOnDay', function() {
+    it('should return the overall average steps for a given day out of all users', function() {
+      expect(activity.getOverallAverageStepsOnDay(date)).to.equal(17327 / 2);
+    });
+
+    it('should return 0 if the given day has no data', function() {
+      futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
+      expect(activity.getOverallAverageStepsOnDay(futureJuly)).to.equal(0);
+    });
+  });
 });
