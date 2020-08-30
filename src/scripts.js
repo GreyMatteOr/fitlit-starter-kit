@@ -39,7 +39,7 @@ function displayHydration(user) {
 
 function displaySleep(user) {
   let lastDay = '2019/09/22';
-  let recentSleepHours = sleep.getHoursSleptOnDate(lastDay, user.id);
+  let recentSleepHours = sleep.getHoursOnDate(lastDay, user.id);
   let recentSleepQuality = sleep.getQualityOnDate(lastDay, user.id);
   let adjective = (recentSleepQuality >= 4 ? 'very deeply' : (recentSleepQuality >= 3 ? 'deeply' : (recentSleepQuality >= 2 ? 'alright' : 'poorly')));
   greeting.innerText += `\n${user.getFirstName()} slept ${adjective} for ${recentSleepHours} hours`;
@@ -53,8 +53,8 @@ function displaySleep(user) {
     const quality = latestWeekSleepQuality[day];
     greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
   })
-  let averageHours = sleep.calculateAverage(user.id);
-  let averageQuality = sleep.calculateAverageQuality(user.id);
+  let averageHours = sleep.getAverageHours(user.id);
+  let averageQuality = sleep.getAverageQuality(user.id);
   adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
   greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
 }
