@@ -4,7 +4,7 @@ class Activity {
   constructor(data) {
     this.data = data.map((datum) => {
       if(datum.date.__proto__.constructor.name !== 'Date') {
-        datum.date = moment(datum.date.replace('-', '/'), 'YYYY-MM-DD');
+        datum.date = moment(datum.date, 'YYYY/MM/DD');
       }
       return datum;
     });
@@ -17,38 +17,55 @@ class Activity {
     return userData;
   };
 
-  getStepsTaken(date, id) {
+  getDayStat(date, id, stat) {
     let day = this.data.find((datum) => {
-      return id === datum.userID && moment(date, 'YYYY-MM-DD').isSame(datum.date);
+      return id === datum.userID && moment(date).isSame(datum.date);
     });
     if (day === undefined) return null;
-    return day.numSteps;
+    return day[stat];
+  }
+
+  getStepsTaken(date, id) {
+    return this.getDayStat(date, id, 'numSteps');
   }
 
   getMilesWalked(date, user) {
     let steps = this.getStepsTaken(date, user.id)
     let strideLength = user.strideLength;
-    return (steps === null ? steps * strideLength / 5280 : null);
+    return (steps === null ? null : steps * strideLength / 5280);
   };
 
   getMinutesActive(date, id) {
-    let day = this.data.find((datum) => {
-      return moment(datum.date).isSame(date) && datum.userID === id;
-    });
-    if (day === undefined) return null;
-    return day.minutesActive;
+    return this.getDayStat(date, id, 'minutesActive');
   }
 
-  getAverageActivityOverWeek(weekStart, weekEnd, id) {
+  getFlightsClimbed(date, id) {
+    return this.getDayStat(date, id, 'flightsOfStairs');
+  }
+
+  getAverageActivityOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
+    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'minutesActive')
+  }
+
+  getAverageStepsOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
+    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'numSteps')
+  }
+
+  getAverageFlightsOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
+    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'flightsOfStairs')
+  }
+
+  getAverageStatOverWeek(weekEnd, weekStart, id, stat) {
     weekStart = moment(weekStart).subtract(1, 's');
     weekEnd = moment(weekEnd).add(1, 's');
     let userData = this.data.filter(datum => {
       return datum.userID === id && moment(datum.date).isBetween(weekStart, weekEnd);
     });
-    let totalMinutes = userData.reduce((sumActive, curr, i, arr) => {
-      return sumActive + curr.minutesActive;
+    console.log(userData)
+    let total = userData.reduce((sum, curr) => {
+      return sum + curr[stat];
     }, 0);
-    return totalMinutes / userData.length
+    return total / userData.length
   }
 
   exceededGoal(user, day) {
