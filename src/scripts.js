@@ -2,6 +2,7 @@ let greeting = document.querySelector('h1');
 const users = new UserRepository(userData);
 const hydration = new Hydration(hydrationData);
 const sleep = new Sleep(sleepData);
+const activity = new Activity(activityData);
 window.onload = onLoad
 
 function onLoad () {
@@ -9,6 +10,7 @@ function onLoad () {
   displayStepGoalMessage(randomUser);
   displayHydration(randomUser);
   displaySleep(randomUser);
+  displayActivity(randomUser);
 }
 
 function getRandomUser() {
@@ -47,10 +49,6 @@ function displaySleep(user) {
   latestWeekSleepQuality.reverse();
   latestWeekSleepHours.shift();
   latestWeekSleepQuality.shift();
-  // for(let day = 0; day < latestWeekSleepHours.length; day++) {
-  //   latestWeekSleepHours[day]
-  //   latestWeekSleepQuality[day]
-  // }
   latestWeekSleepHours.forEach((quantity, day) => {
     const quality = latestWeekSleepQuality[day];
     greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
@@ -59,4 +57,26 @@ function displaySleep(user) {
   let averageQuality = sleep.calculateAverageQuality(user.id);
   adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
   greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
+}
+
+function displayActivity(user) {
+  let lastDay = moment('2019/09/22', 'YYYY/MM/DD');
+  let stepsToday = activity.getStepsTaken(lastDay, user.id);
+  let avgSteps = activity.getAverageStepsOnDay(lastDay);
+  let stepsDiff = stepsToday - avgSteps;
+  let minutesToday = activity.getMinutesActive(lastDay, user.id);
+  let avgMinutes = activity.getAverageMinutesOnDay(lastDay);
+  let minutesDiff = minutesToday - avgMinutes;
+  let flightsToday = activity.getFlightsClimbed(lastDay, user.id);
+  let avgFlights = activity.getAverageFlightsOnDay(lastDay);
+  let flightsDiff = flightsToday - avgFlights;
+  greeting.innerText += `\n${user.getFirstName()} took ${stepsToday} steps today.`;
+  greeting.innerText += `\n${user.getFirstName()} worked out for ${activity.getMinutesActive(lastDay, user.id)} minutes today!`
+  greeting.innerText += `\n${user.getFirstName()} went  ${activity.getMilesWalked(lastDay, user)} mile(s) today!`
+  greeting.innerText += `\n${user.getFirstName()} took ${Math.abs(stepsDiff)} ${stepsDiff > 0? 'fewer' : 'more' } step(s) compared to the average user.`
+  greeting.innerText += `\n${user.getFirstName()} worked out ${Math.abs(minutesDiff)} minute(s) ${minutesDiff > 0? 'less' : 'longer' } than the average user.`
+  greeting.innerText += `\n${user.getFirstName()} climbed ${Math.abs(flightsDiff)} ${flightsDiff > 0? 'fewer' : 'more' } flight(s) of stairs than to the average user.`
+  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageStepsOverWeek(user.id, lastDay)} steps per day! `
+  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageFlightsOverWeek(user.id, lastDay)} flights of stairs per day! `
+  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageActivityOverWeek(user.id, lastDay)} minutes of activity per day! `
 }
