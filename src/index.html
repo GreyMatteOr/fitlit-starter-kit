@@ -4,30 +4,36 @@
     <meta charset="UTF-8">
     <title>Activity Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Spartan&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./normalize.css">
     <link rel="stylesheet" type="text/css" href="./styles.css">
   </head>
   <body>
     <header>
-      <h1>NAME, DATE</h1>
-      <img src="" alt="FITLIT ICON">
+      <h1>NAME</h1>
+      <h1>Date</h1>
+      <button class='header-button'>toggle</button>
+      <div id='icon'>
+        <img src="" alt="icon">
+        <h3>fitlit</h3>
+      </div>
     </header>
     <main>
       <section class='activity activity-color' id=''>
         <div class='underlay'>
-          <div class='' id=''>
-            <h2 class='title'>step goal</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='step-goal' id=''>
+            <h2 class='step-goal-title'>step goal</h2>
+            <h3 class='step-goal-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>minutes active</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='minutes-active' id=''>
+            <h2 class='minutes-active-title'>minutes active</h2>
+            <h3 class='minutes-active-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>distance in miles</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='miles' id=''>
+            <h2 class='miles-title'>distance in miles</h2>
+            <h3 class='miles-stat'>stat</h3>
           </div>
-          <div class='graph' id=''>
+          <div class='activity-graph' id=''>
               <div class='sunday'>sunday</div>
               <div class='monday'>monday</div>
               <div class='tuesday'>tuesday</div>
@@ -37,20 +43,21 @@
               <div class='saturday'>saturday</div>
               <img src="" alt="">
           </div>
+          <button class='activity-button'>toggle</button>
         </div>
       </section>
 
       <section class='sleep sleep-color' id=''>
         <div class='underlay'>
-          <div class='' id=''>
-            <h2 class='title'>hours slept</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='hours-slept' id=''>
+            <h2 class='hours-slept-title'>hours slept</h2>
+            <h3 class='hours-slept-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>quality of sleep</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='sleep-quality' id=''>
+            <h2 class='sleep-quality-title'>quality of sleep</h2>
+            <h3 class='sleep-quality-stat'>stat</h3>
           </div>
-          <div class='graph' id=''>
+          <div class='sleep-graph' id=''>
               <div class='sunday'>sunday</div>
               <div class='monday'>monday</div>
               <div class='tuesday'>tuesday</div>
@@ -60,16 +67,17 @@
               <div class='saturday'>saturday</div>
               <img src="" alt="">
           </div>
+          <button class='sleep-quality-button'>toggle</button>
         </div>
       </section>
 
       <section class='hydration hydration-color' id=''>
         <div class='underlay'>
-          <div class='' id=''>
-            <h2 class='title'>ounces drunk</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='ounces-drunk' id=''>
+            <h2 class='ounces-drunk-title'>ounces drunk</h2>
+            <h3 class='ounces-drunk-stat'>stat</h3>
           </div>
-          <div class='graph' id=''>
+          <div class='ounces-graph' id=''>
               <div class='sunday'>sunday</div>
               <div class='monday'>monday</div>
               <div class='tuesday'>tuesday</div>
@@ -79,42 +87,43 @@
               <div class='saturday'>saturday</div>
               <img src="" alt="">
           </div>
+          <button class='ounces-drunk-button'>toggle</button>
         </div>
       </section>
 
       <section class='compare compare-color' id=''>
-        <div class='underlay'>
-          <div class='' id=''>
-            <h2 class='title'>steps for the day</h2>
-            <h3 class='stat'>stat</h3>
+        <div class='underlay compare-underlay'>
+          <div class='compare-steps-day' id=''>
+            <h2 class='compare-steps-day-title'>steps for the day</h2>
+            <h3 class='compare-steps-day-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>minutes active</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='compare-minutes-active' id=''>
+            <h2 class='compare-minutes-active-title'>minutes active</h2>
+            <h3 class='compare-minutes-active-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>flights of stairs climbed</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='flights-of-stairs-climbed' id=''>
+            <h2 class='flights-of-stairs-climbed-title'>flights of stairs climbed</h2>
+            <h3 class='flights-of-stairs-climbed-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>hours slept</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='compare-hours-slept' id=''>
+            <h2 class='compare-hours-slept-title'>hours slept</h2>
+            <h3 class='hours-slept-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-            <h2 class='title'>quality of sleep</h2>
-            <h3 class='stat'>stat</h3>
+          <div class='compare-sleep-quality' id=''>
+            <h2 class='compare-sleep-quality-title'>quality of sleep</h2>
+            <h3 class='sleep-quality-stat'>stat</h3>
           </div>
-          <div class='' id=''>
-          <h2 class='title'>water consumption</h2>
-          <h3 class='stat'>stat</h3>
+          <div class='compare-water-consumption' id=''>
+          <h2 class='water-consumption-title'>water consumption</h2>
+          <h3 class='water-consumption-stat'>stat</h3>
         </div>
         </div>
       </section>
 
       <section class='social social-color' id=''>
-        <div class='underlay'>
+        <div class='underlay social-underlay'>
           <div class='friend' id=''>
-            <img src="" alt="">
+            <img src="" alt="person0">
               <div>
                 <h2 class='name'>name</h2>
                 <h3 class='stat'>stat</h3>
@@ -123,7 +132,7 @@
               </div>
           </div>
           <div class='friend' id=''>
-            <img src="" alt="">
+            <img src="" alt="person1">
               <div>
                 <h2 class='name'>name</h2>
                 <h3 class='stat'>stat</h3>
@@ -132,7 +141,7 @@
               </div>
           </div>
           <div class='friend' id=''>
-            <img src="" alt="">
+            <img src="" alt="person2">
               <div>
                 <h2 class='name'>name</h2>
                 <h3 class='stat'>stat</h3>
@@ -141,7 +150,7 @@
               </div>
           </div>
           <div class='friend' id=''>
-          <img src="" alt="">
+          <img src="" alt="person3">
             <div>
               <h2 class='name'>name</h2>
               <h3 class='stat'>stat</h3>
@@ -154,7 +163,7 @@
 
     </main>
 
-    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="../node-modules/moment/moment.js"></script>
     <script type="text/javascript" src="../data/users.js"></script>
     <script type="text/javascript" src="../data/hydration.js"></script>
     <script type="text/javascript" src="../data/sleep.js"></script>
