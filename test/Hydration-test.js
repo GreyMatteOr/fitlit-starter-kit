@@ -1,5 +1,6 @@
 const chai = require("chai");
 const expect = chai.expect;
+const moment = require('moment');
 
 const Hydration = require('../src/Hydration');
 
@@ -110,37 +111,37 @@ describe('Hydration', function() {
 
   describe('findOuncesWaterOfDay()', function() {
     it('should return the ounces of water drunk for a given date', function() {
-      let date1 = '2019/06/17'
-      let date2 = '2019/06/21'
+      let date1 = moment('2019/06/17', 'YYYY/MM/DD');
+      let date2 = moment('2019/06/21', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfDay(date1, 1)).to.equal(96);
       expect(hydration.findOuncesWaterOfDay(date2, 1)).to.equal(99);
     });
 
     it('should still return the ounces of water drunk for a any user for a specific date', function() {
-      let date = '2019/06/18'
+      let date = moment('2019/06/18', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfDay(date, 1)).to.equal(96);
       expect(hydration.findOuncesWaterOfDay(date, 2)).to.equal(70);
     });
 
     it(`should return 0 if it can't find the day`, function() {
-      let date = '2020/06/17'
-      expect(hydration.findOuncesWaterOfDay(date)).to.equal(0);
+      let date = moment('2020/06/17', 'YYYY/MM/DD');
+      expect(hydration.findOuncesWaterOfDay(date)).to.equal(null);
     });
   });
 
   describe('findOuncesWaterOfWeekBefore()', function() {
     it('should return an Array the ounces of water drunk for a given date', function() {
-      let date = '2019/06/21'
+      let date = moment('2019/06/21', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
     });
 
     it(`shouldn't return an entry in the array if it can't find the day`, function() {
-      let date = '2019/06/20'
+      let date = moment('2019/06/20', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 37, 69, 96, 96, 28, 82]);
     });
 
     it('should return all 0s if a date is not identified', function() {
-      let date = '2068/06/23'
+      let date = moment('2020/06/21', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 0, 0, 0, 0, 0, 0])
     });
   });
