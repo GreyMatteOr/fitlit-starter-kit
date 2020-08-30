@@ -184,15 +184,13 @@ describe('Activity', function() {
 
   describe('getAverageActivityOverWeek()', function() {
     it('should return the average number of minutes of activity', function() {
-      weekStart = moment('2019/06/15', 'YYYY/MM/DD');
       weekEnd = moment('2019/06/21', 'YYYY/MM/DD');
-      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd, weekStart)).to.equal(664 / 7);
+      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd)).to.equal(664 / 7);
     });
 
     it(`should not include any days that don't have data in the calculation`, function() {
-      weekStart = moment('2019/06/14', 'YYYY/MM/DD');
       weekEnd = moment('2019/06/20', 'YYYY/MM/DD');
-      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd, weekStart)).to.equal(637 / 6);
+      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd)).to.equal(637 / 6);
     });
   });
 

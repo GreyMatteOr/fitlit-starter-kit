@@ -208,7 +208,7 @@ describe('Sleep', function() {
   });
 
   describe('getWeeklyQuantity()', function() {
-    it('should return an Array of hoursSlept for 7 days ending on the date passed in', function() {
+    it('should return an Array of hoursSlept for a week ending on a given date', function() {
       let weekOfSleepData = [
         6.1,
         10.8,
@@ -222,9 +222,8 @@ describe('Sleep', function() {
       expect(sleep.getWeeklyQuantity(date, 1)).to.deep.equal(weekOfSleepData);
     });
 
-    it(`should return 0's for any date of the week it doesn't find`, function() {
+    it(`should not return anything for any date of the week that has no data`, function() {
       let weekOfSleepData = [
-        0,
         6.1,
         10.8,
         4.1,
@@ -236,14 +235,14 @@ describe('Sleep', function() {
       expect(sleep.getWeeklyQuantity(date, 1)).to.deep.equal(weekOfSleepData);
     });
 
-    it('should return an array of seven `0`-s if the end date is not defined', function () {
+    it('should return an empty array if the end date is not defined', function () {
       let date = moment("2020/06/21", 'YYYY/MM/DD');
-      expect(sleep.getWeeklyQuantity(date)).to.deep.equal([0, 0, 0, 0, 0, 0, 0]);
+      expect(sleep.getWeeklyQuantity(date)).to.deep.equal([]);
     })
   });
 
   describe('getWeeklyQuality()', function() {
-    it('should return an Array of quality of sleep for 7 days ending on the date passed in', function() {
+    it('should return an Array of quality of sleep the week ending on the given date', function() {
       let weekOfSleepData = [
         2.2,
         4.7,
@@ -257,9 +256,8 @@ describe('Sleep', function() {
       expect(sleep.getWeeklyQuality(date, 1)).to.deep.equal(weekOfSleepData);
     });
 
-    it(`should return 0's for any date of the week it doesn't find`, function() {
+    it(`should no entry for any date of the week that doesn't have data`, function() {
       let weekOfSleepData = [
-        0,
         2.2,
         4.7,
         3.6,
@@ -271,9 +269,9 @@ describe('Sleep', function() {
       expect(sleep.getWeeklyQuality(date, 1)).to.deep.equal(weekOfSleepData);
     });
 
-    it('should return an array of seven `0`-s if the end date is not defined', function () {
+    it('should return an empty array if the end date is not defined', function () {
       let date = moment("2020/06/17", 'YYYY/MM/DD');
-      expect(sleep.getWeeklyQuality(date)).to.deep.equal([0, 0, 0, 0, 0, 0, 0]);
+      expect(sleep.getWeeklyQuality(date)).to.deep.equal([]);
     })
   });
 
@@ -329,7 +327,7 @@ describe('Sleep', function() {
     });
   });
 
-  describen('getBestSleepDay()', function() {
+  describe('getBestSleepDay()', function() {
     it('should return an object with data about the best night sleep ever achieved', function() {
       let data = {
         "userID": 1,

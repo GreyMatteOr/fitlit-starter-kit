@@ -42,11 +42,12 @@ class DataRepository{
     weekEnd = moment(weekEnd).add(1, 's');
     let week = userData.filter(datum => moment(datum.date).isBetween(weekStart, weekEnd));
     let output = week.map(day => (day ? day[stat]: null));
-    while (output.length < 7) output.unshift(0);
+    week = week.filter(day => day !== null);
     return output;
   }
 
-  getAverageStatOverWeek(id,
+  getAverageStatOverWeek(
+    id,
     stat,
     weekEnd,
     weekStart = moment(weekEnd).subtract(6, 'd')
@@ -54,7 +55,6 @@ class DataRepository{
     weekStart = moment(weekStart).subtract(1, 's');
     weekEnd = moment(weekEnd).add(1, 's');
     let week = this.getWeekStats(id, stat, weekEnd, weekStart);
-    week = week.filter(day => day !== null);
     let total = week.reduce((sum, day) => {
       return sum + day;
     }, 0);

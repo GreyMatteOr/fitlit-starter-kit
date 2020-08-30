@@ -7,7 +7,7 @@ class Hydration extends DataRepository{
   }
 
   calculateAverageHydration(id) {
-    return this.calculateStatOverallAverageForUser('numOunces', id);
+    return this.getStatOverallAverageForUser('numOunces', id);
   }
 
   findOuncesWaterOfDay(date, id) {

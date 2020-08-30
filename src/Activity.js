@@ -1,39 +1,15 @@
 const moment = require('moment');
+const DataRepository = require('./DataRepository.js');
 
-class Activity {
+
+class Activity extends DataRepository {
   constructor(data) {
-    this.data = data.map((datum) => {
-      if(datum.date.__proto__.constructor.name !== 'Date') {
-        datum.date = moment(datum.date, 'YYYY/MM/DD');
-      }
-      return datum;
-    });
+    super(data);
   };
-
-  getUserData(id) {
-    let userData = this.data.filter((datum) => {
-      return datum.userID === id;
-    });
-    return userData;
-  };
-
-  getDayStat(date, id, stat) {
-    let day = this.data.find((datum) => {
-      return id === datum.userID && moment(date).isSame(datum.date);
-    });
-    if (day === undefined) return null;
-    return day[stat];
-  }
 
   getStepsTaken(date, id) {
     return this.getDayStat(date, id, 'numSteps');
   }
-
-  getMilesWalked(date, user) {
-    let steps = this.getStepsTaken(date, user.id)
-    let strideLength = user.strideLength;
-    return (steps === null ? null : steps * strideLength / 5280);
-  };
 
   getMinutesActive(date, id) {
     return this.getDayStat(date, id, 'minutesActive');
@@ -43,35 +19,27 @@ class Activity {
     return this.getDayStat(date, id, 'flightsOfStairs');
   }
 
-  getAverageActivityOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
-    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'minutesActive')
+  getMilesWalked(date, user) {
+    let steps = this.getStepsTaken(date, user.id)
+    let strideLength = user.strideLength;
+    return (steps === null ? null : steps * strideLength / 5280);
+  };
+
+  getAverageActivityOverWeek(id, weekEnd) {
+    return this.getAverageStatOverWeek(id, 'minutesActive', weekEnd)
   }
 
-  getAverageStepsOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
-    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'numSteps')
+  getAverageStepsOverWeek(id, weekEnd) {
+    return this.getAverageStatOverWeek(id, 'numSteps', weekEnd)
   }
 
-  getAverageFlightsOverWeek(id, weekEnd, weekStart = moment(weekEnd).subtract(6, 'd')) {
-    return this.getAverageStatOverWeek(weekEnd, weekStart, id, 'flightsOfStairs')
-  }
-
-  getAverageStatOverWeek(weekEnd, weekStart, id, stat) {
-    weekStart = moment(weekStart).subtract(1, 's');
-    weekEnd = moment(weekEnd).add(1, 's');
-    let userData = this.data.filter(datum => {
-      return datum.userID === id && moment(datum.date).isBetween(weekStart, weekEnd);
-    });
-    let total = userData.reduce((sum, curr) => {
-      return sum + curr[stat];
-    }, 0);
-    return total / userData.length
+  getAverageFlightsOverWeek(id, weekEnd) {
+    return this.getAverageStatOverWeek(id, 'flightsOfStairs', weekEnd)
   }
 
   exceededGoal(user, day) {
-    if( user === undefined || day === undefined) return null;
-    let isRightUser = user.id === day.userID;
-    let exceededGoal = day.numSteps > user.dailyStepGoal
-    return isRightUser && exceededGoal;
+    if (user === undefined || day === undefined || user.id !== day.userID) return null;
+    return day.numSteps > user.dailyStepGoal;
   };
 
   getDaysExceeded(user) {
@@ -120,4 +88,6 @@ class Activity {
   }
 }
 
-module.exports = Activity;
+if (typeof module !== 'undefined') {
+  module.exports = Activity;
+}

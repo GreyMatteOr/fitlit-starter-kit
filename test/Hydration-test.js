@@ -123,26 +123,26 @@ describe('Hydration', function() {
       expect(hydration.findOuncesWaterOfDay(date, 2)).to.equal(70);
     });
 
-    it(`should return 0 if it can't find the day`, function() {
+    it(`should return null if it can't find the day`, function() {
       let date = moment('2020/06/17', 'YYYY/MM/DD');
       expect(hydration.findOuncesWaterOfDay(date)).to.equal(null);
     });
   });
 
   describe('findOuncesWaterOfWeekBefore()', function() {
-    it('should return an Array the ounces of water drunk for a given date', function() {
-      let date = moment('2019/06/21', 'YYYY/MM/DD');
-      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
+    it('should return an Array the ounces of water drunk for week ending on a given date', function() {
+      let weekEnd = moment('2019/06/21', 'YYYY/MM/DD');
+      expect(hydration.findOuncesWaterOfWeekBefore(weekEnd, 1)).to.deep.equal([37, 69, 96, 96, 28, 82, 99]);
     });
 
-    it(`shouldn't return an entry in the array if it can't find the day`, function() {
-      let date = moment('2019/06/20', 'YYYY/MM/DD');
-      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 37, 69, 96, 96, 28, 82]);
+    it(`shouldn't return an entry in the array for days of the week that have no data`, function() {
+      let weekEnd = moment('2019/06/20', 'YYYY/MM/DD');
+      expect(hydration.findOuncesWaterOfWeekBefore(weekEnd, 1)).to.deep.equal([37, 69, 96, 96, 28, 82]);
     });
 
-    it('should return all 0s if a date is not identified', function() {
-      let date = moment('2020/06/21', 'YYYY/MM/DD');
-      expect(hydration.findOuncesWaterOfWeekBefore(date, 1)).to.deep.equal([0, 0, 0, 0, 0, 0, 0])
+    it('should return an empty array if a date is not identified', function() {
+      let weekEnd = moment('2020/06/21', 'YYYY/MM/DD');
+      expect(hydration.findOuncesWaterOfWeekBefore(weekEnd, 1)).to.deep.equal([])
     });
   });
 });
