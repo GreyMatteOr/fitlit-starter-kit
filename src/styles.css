@@ -5,6 +5,7 @@ body {
 }
 
 body {
+  font-family: 'Spartan';
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -12,9 +13,26 @@ body {
 }
 
 header {
+  display: flex;
+  justify-content: space-around;
   background-color: lightgrey;
   width: 98%;
   padding-bottom: .25em;
+}
+
+#icon {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
+}
+
+#icon>img {
+  align-self: center;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 1em;
 }
 
 main {
@@ -28,18 +46,79 @@ main {
 
 section {
   padding: .75em;
+  min-height: min-content;
+  min-width: min-content;
 }
 
 .underlay {
   background-color: rgb(255,255,255,.6);
   border-radius: 1em;
-  width: 100%;
-  backopacity: .5;
+  max-width: 98%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1.5em;
+  box-shadow: 3px 3px 3px #888888;
+  padding: .75em;
 }
 
+.step-goal-title, .minutes-active-title, .miles-title,
+.hours-slept-title, .sleep-quality-title, .ounces-drunk-title,
+.compare-steps-day-title, .compare-minutes-active-title, .flights-of-stairs-climbed-title,
+.compare-hours-slept-title, .compare-sleep-quality-title, .water-consumption-title, .name {
+  text-shadow: 0 0 3px #E8E8E8, 0 0 5px #7A7A82;
+}
+
+.compare-steps-day, .compare-steps-day, .flights-of-stairs-climbed,
+.compare-hours-slept, .compare-sleep-quality, .compare-water-consumption {
+  margin: .5em;
+}
+
+.activity-button, .sleep-quality-button, .ounces-drunk-button {
+  cursor: pointer;
+}
+
+.header-button {
+  width: 50%;
+  background: border-box;
+}
+
+.header-button:hover {
+  background: #1D405D;
+}
 .activity {
   grid-column: 1;
   grid-row: 1;
+}
+
+.activity-color{
+  border-radius: 1em;
+  background-color: #FF9181;
+}
+
+.step-goal {
+  grid-row: 1;
+  margin: 1em;
+}
+
+.minutes-active {
+  grid-row: 1;
+  margin: 1em;
+}
+
+.miles {
+  grid-row: 1;
+  margin: 1em;
+}
+
+.activity-graph {
+  grid-row: 2;
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-template-columns: repeat(7,auto .5fr);
+  align-content: end;
+}
+
+.activity-button {
+  grid-row: 3;
 }
 
 .sleep {
@@ -47,14 +126,80 @@ section {
   grid-row: 1;
 }
 
+.sleep>.underlay {
+  display: grid;
+  grid-template-columns: 1fr 1em 1fr;
+}
+
+.sleep-color{
+  border-radius: 1em;
+  background-color: #e1c2ff;
+}
+
+.hours-slept {
+  grid-row: 1;
+  margin: 1em;
+  grid-column: 1;
+}
+
+.sleep-quality {
+  grid-row: 1;
+  margin: 1em;
+  grid-column: 3;
+}
+
+.sleep-graph {
+  grid-row: 2;
+  grid-column: 1 / span 3;
+  display: grid;
+  grid-template-columns: repeat(7,auto .5fr);
+  align-content: end;
+}
+
+.sleep-quality-button {
+  grid-row: 3;
+  grid-column: 1 / span 3;
+}
+
 .hydration {
   grid-column: 1;
   grid-row: 2;
 }
 
+.hydration-color{
+  border-radius: 1em;
+  background-color: #B7C2F8;
+}
+
+.ounces-drunk{
+  grid-row: 1;
+}
+
+.ounces-graph {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(7,auto .5fr);
+  align-content: end;
+}
+
+.ounces-drunk-button {
+  grid-row: 3;
+}
+
 .compare {
   grid-column: 2;
   grid-row: 2;
+}
+
+.compare-color{
+  border-radius: 1em;
+  background-color: #79e1ae;
+}
+
+.compare-underlay {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .social {
@@ -63,26 +208,27 @@ section {
   grid-row: 1 / span 3;
 }
 
-.activity-color{
-  border-radius: 1em;
-  background-color: #FF9181;
-}
-
-.hydration-color{
-  border-radius: 1em;
-  background-color: #B7C2F8;
-}
-
-.sleep-color{
-  border-radius: 1em;
-  background-color: #e1c2ff;
-}
-
-.compare-color{
-  border-radius: 1em;
-  background-color: #79e1ae;
-}
-
 .social-color{
-  background-color: #e1ff69;
+  border-radius: 1em;
+  background-color: #E1FF69;
+}
+
+.social-underlay {
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.friend {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: .5em;
+  margin-bottom: .75em;
+  background-color: rgb(200, 200, 200, .5);
+  border-radius: .5em;
+  box-shadow: 3px 3px 3px #888888;
+}
+
+.friend>img, .friend>div {
+  align-self: center;
+  margin: 1em;
 }
