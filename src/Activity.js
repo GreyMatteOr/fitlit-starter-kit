@@ -1,6 +1,7 @@
-const moment = require('moment');
-const DataRepository = require('./DataRepository.js');
-
+if (typeof(module) !== 'undefined') {
+  const moment = require('moment');
+  const DataRepository = require('./DataRepository.js');
+}
 
 class Activity extends DataRepository {
   constructor(data) {
@@ -88,6 +89,6 @@ class Activity extends DataRepository {
   }
 }
 
-if (typeof module !== 'undefined') {
+if (typeof(module) !== 'undefined') {
   module.exports = Activity;
 }

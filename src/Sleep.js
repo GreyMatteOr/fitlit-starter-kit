@@ -1,5 +1,7 @@
-const moment = require('moment');
-const DataRepository = require('./DataRepository.js');
+if (typeof(module) !== 'undefined') {
+  const moment = require('moment');
+  const DataRepository = require('./DataRepository.js');
+}
 
 class Sleep extends DataRepository{
   constructor(data) {
@@ -74,6 +76,6 @@ class Sleep extends DataRepository{
   }
 };
 
-if (typeof module !== 'undefined') {
+if (typeof(module) !== 'undefined') {
   module.exports = Sleep;
 }

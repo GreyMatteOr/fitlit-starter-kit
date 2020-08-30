@@ -1,4 +1,6 @@
-const moment = require('moment');
+if (typeof(module) !== 'undefined') {
+  const moment = require('moment');
+}
 
 class DataRepository{
   constructor(data) {
@@ -74,4 +76,6 @@ class DataRepository{
   }
 }
 
-module.exports = DataRepository;
+if (typeof(module) !== 'undefined') {
+  module.exports = DataRepository;
+}
