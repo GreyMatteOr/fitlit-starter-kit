@@ -186,13 +186,13 @@ describe('Activity', function() {
     it('should return the average number of minutes of activity', function() {
       weekStart = moment('2019/06/15', 'YYYY/MM/DD');
       weekEnd = moment('2019/06/21', 'YYYY/MM/DD');
-      expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(664 / 7);
+      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd, weekStart)).to.equal(664 / 7);
     });
 
     it(`should not include any days that don't have data in the calculation`, function() {
       weekStart = moment('2019/06/14', 'YYYY/MM/DD');
       weekEnd = moment('2019/06/20', 'YYYY/MM/DD');
-      expect(activity.getAverageActivityOverWeek(weekStart, weekEnd, user1.id)).to.equal(637 / 6);
+      expect(activity.getAverageActivityOverWeek(user1.id, weekEnd, weekStart)).to.equal(637 / 6);
     });
   });
 
@@ -303,7 +303,7 @@ describe('Activity', function() {
     });
   })
 
-  describe.only('getAverageStepsOnDay', function() {
+  describe('getAverageStepsOnDay', function() {
     it('should return the overall average steps for a given day out of all users', function() {
       expect(activity.getAverageStepsOnDay(date)).to.equal(17327 / 2);
     });
@@ -314,7 +314,7 @@ describe('Activity', function() {
     });
   });
 
-  describe.only('getAverageMinutesOnDay', function() {
+  describe('getAverageMinutesOnDay', function() {
     it('should return the overall average steps for a given day out of all users', function() {
       expect(activity.getAverageMinutesOnDay(date)).to.equal(243 / 2);
     });
@@ -325,7 +325,7 @@ describe('Activity', function() {
     });
   });
 
-  describe.only('getAverageFlightsOnDay', function() {
+  describe('getAverageFlightsOnDay', function() {
     it('should return the overall average steps for a given day out of all users', function() {
       expect(activity.getAverageFlightsOnDay(date)).to.equal(46 / 2);
     });

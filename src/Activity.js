@@ -1,4 +1,4 @@
-// const moment = require('moment');
+const moment = require('moment');
 
 class Activity {
   constructor(data) {
@@ -61,7 +61,6 @@ class Activity {
     let userData = this.data.filter(datum => {
       return datum.userID === id && moment(datum.date).isBetween(weekStart, weekEnd);
     });
-    console.log(userData)
     let total = userData.reduce((sum, curr) => {
       return sum + curr[stat];
     }, 0);
@@ -121,4 +120,4 @@ class Activity {
   }
 }
 
-// module.exports = Activity;
+module.exports = Activity;
