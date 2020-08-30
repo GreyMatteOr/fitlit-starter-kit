@@ -56,12 +56,12 @@ class DataRepository{
     let week = this.getWeekStats(id, stat, weekEnd, weekStart);
     week = week.filter(day => day !== null);
     let total = week.reduce((sum, day) => {
-      return sum + day[stat];
+      return sum + day;
     }, 0);
     return total / week.length
   }
 
-  calculateStatOverallAverageForUser(stat, id) {
+  getStatOverallAverageForUser(stat, id) {
     let userData = this.getUserData(id);
     if(userData.length === 0){
       return 0;
