@@ -33,16 +33,7 @@
             <h2 class='miles-title'>distance in miles</h2>
             <h3 class='miles-stat'>stat</h3>
           </div>
-          <div class='activity-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
+          <canvas id="activity-chart" width="400" height="400"></canvas>
           <button class='activity-button'>toggle</button>
         </div>
       </section>
@@ -57,16 +48,7 @@
             <h2 class='sleep-quality-title'>quality of sleep</h2>
             <h3 class='sleep-quality-stat'>stat</h3>
           </div>
-          <div class='sleep-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
+          <canvas id="sleep-chart" width="400" height="400"></canvas>
           <button class='sleep-quality-button'>toggle</button>
         </div>
       </section>
@@ -77,16 +59,7 @@
             <h2 class='ounces-drunk-title'>ounces drunk</h2>
             <h3 class='ounces-drunk-stat'>stat</h3>
           </div>
-          <div class='ounces-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
+          <canvas id="hydration-chart" width="400" height="400"></canvas>
           <button class='ounces-drunk-button'>toggle</button>
         </div>
       </section>
@@ -163,7 +136,8 @@
 
     </main>
 
-    <script type="text/javascript" src="../node-modules/moment/moment.js"></script>
+    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="../node_modules/chart.js/dist/Chart.js"></script>
     <script type="text/javascript" src="../data/users.js"></script>
     <script type="text/javascript" src="../data/hydration.js"></script>
     <script type="text/javascript" src="../data/sleep.js"></script>

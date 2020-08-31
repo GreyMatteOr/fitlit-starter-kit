@@ -3,6 +3,9 @@ const users = new UserRepository(userData);
 const hydration = new Hydration(hydrationData);
 const sleep = new Sleep(sleepData);
 const activity = new Activity(activityData);
+var activityChart = document.getElementById('activity-chart');
+var sleepChart = document.getElementById('sleep-chart');
+var hydrationChart = document.getElementById('hydration-chart');
 window.onload = onLoad
 
 function onLoad () {
@@ -27,36 +30,19 @@ function displayStepGoalMessage(user) {
 function displayHydration(user) {
   let lastDay = '2019/09/22';
   let dailyHydration = hydration.findOuncesWaterOfDay(lastDay, user.id);
-  let averageHydrationOverLatestWeek = hydration.findOuncesWaterOfWeekBefore(lastDay, user.id);
-  averageHydrationOverLatestWeek.pop();
-  let message = '';
-  averageHydrationOverLatestWeek.forEach((ounces, daysAgo) => message = `
-    ${6 - daysAgo} days ago you drank ${ounces} ounces of water` + message);
-  message = `
-    Your hydration for today, ${lastDay}, is ${dailyHydration} ounces.` + message;
-  greeting.innerText += message;
+  let hydrationWeekData = hydration.findOuncesWaterOfWeekBefore(lastDay, user.id);
+  buildChart(hydrationChart, hydrationWeekData, 'Hydration')
 };
 
 function displaySleep(user) {
   let lastDay = '2019/09/22';
   let recentSleepHours = sleep.getHoursOnDate(lastDay, user.id);
   let recentSleepQuality = sleep.getQualityOnDate(lastDay, user.id);
-  let adjective = (recentSleepQuality >= 4 ? 'very deeply' : (recentSleepQuality >= 3 ? 'deeply' : (recentSleepQuality >= 2 ? 'alright' : 'poorly')));
-  greeting.innerText += `\n${user.getFirstName()} slept ${adjective} for ${recentSleepHours} hours`;
   let latestWeekSleepHours = sleep.getWeeklyQuantity(lastDay, user.id);
   let latestWeekSleepQuality = sleep.getWeeklyQuality(lastDay, user.id);
-  latestWeekSleepHours.reverse();
-  latestWeekSleepQuality.reverse();
-  latestWeekSleepHours.shift();
-  latestWeekSleepQuality.shift();
-  latestWeekSleepHours.forEach((quantity, day) => {
-    const quality = latestWeekSleepQuality[day];
-    greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
-  })
   let averageHours = sleep.getAverageHours(user.id);
   let averageQuality = sleep.getAverageQuality(user.id);
-  adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
-  greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
+  buildChart(sleepChart, latestWeekSleepHours, 'Sleep');
 }
 
 function displayActivity(user) {
@@ -70,13 +56,47 @@ function displayActivity(user) {
   let flightsToday = activity.getFlightsClimbed(lastDay, user.id);
   let avgFlights = activity.getAverageFlightsOnDay(lastDay);
   let flightsDiff = flightsToday - avgFlights;
-  greeting.innerText += `\n${user.getFirstName()} took ${stepsToday} steps today.`;
-  greeting.innerText += `\n${user.getFirstName()} worked out for ${activity.getMinutesActive(lastDay, user.id)} minutes today!`
-  greeting.innerText += `\n${user.getFirstName()} went  ${activity.getMilesWalked(lastDay, user)} mile(s) today!`
-  greeting.innerText += `\n${user.getFirstName()} took ${Math.abs(stepsDiff)} ${stepsDiff > 0? 'fewer' : 'more' } step(s) compared to the average user.`
-  greeting.innerText += `\n${user.getFirstName()} worked out ${Math.abs(minutesDiff)} minute(s) ${minutesDiff > 0? 'less' : 'longer' } than the average user.`
-  greeting.innerText += `\n${user.getFirstName()} climbed ${Math.abs(flightsDiff)} ${flightsDiff > 0? 'fewer' : 'more' } flight(s) of stairs than to the average user.`
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageStepsOverWeek(user.id, lastDay)} steps per day! `
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageFlightsOverWeek(user.id, lastDay)} flights of stairs per day! `
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageActivityOverWeek(user.id, lastDay)} minutes of activity per day! `
+  let weekSteps = activity.getWeekStats(user.id, 'numSteps', lastDay);
+  buildChart(activityChart, weekSteps, 'Steps');
+}
+
+function buildChart(canvas, data, labelName) {
+  var chart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      datasets: [{
+        label: labelName,
+        data: data,
+        backgroundColor: [ //colors will dynamically change
+          'rgba(255, 99, 132)',
+          'rgba(54, 162, 235)',
+          'rgba(255, 206, 86)',
+          'rgba(75, 192, 192)',
+          'rgba(153, 102, 255)',
+          'rgba(255, 159, 64)',
+          'rgba(255, 159, 64)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 159, 64)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
