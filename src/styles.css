@@ -94,22 +94,25 @@ section {
   background-color: #FF9181;
 }
 
-.step-goal {
+.steps-achieved {
   grid-row: 1;
   margin: 1em;
+  background-color: #e88126;
 }
 
 .minutes-active {
   grid-row: 1;
   margin: 1em;
+  background-color: #f0d630;
 }
 
 .miles {
   grid-row: 1;
   margin: 1em;
+  background-color: #458511;
 }
 
-#activity-chart {
+.activity canvas {
   grid-row: 2;
   grid-column: 1 / span 4;
 }
@@ -222,4 +225,9 @@ section {
 .friend>img, .friend>div {
   align-self: center;
   margin: 1em;
+}
+
+.hidden {
+  border-color: yellow;
+  border-style: double;
 }
