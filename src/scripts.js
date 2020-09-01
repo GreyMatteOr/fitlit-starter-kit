@@ -9,6 +9,7 @@ var milesChart = document.querySelector('.miles-activity-chart');
 var sleepChart = document.getElementById('sleep-chart');
 var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
+let currentActiveChart = document.querySelector('.activity canvas');
 let currentDay = moment('2019/09/22', 'YYYY/MM/DD');
 let currentUser
 
@@ -21,7 +22,7 @@ function onLoad () {
   displayStepGoalMessage();
   displayHydration();
   displaySleep();
-  displayActivity();
+  displayStepsChart();
 }
 
 function displayCorrectChart(event) {
@@ -29,7 +30,7 @@ function displayCorrectChart(event) {
     displayStepsChart();
   } else if(event.target.closest('button') === document.querySelector('.minutes-active')) {
     displayMinutesActiveChart();
-  } else {
+  } else if(event.target.closest('button') === document.querySelector('.miles')) {
     displayMilesChart();
   }
 };
@@ -87,32 +88,37 @@ function displayActivity() {
   let flightsDiff = flightsToday - avgFlights;
   let weekSteps = activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let weekMiles = weekSteps.map((stepCount) => stepCount * currentUser.strideLength / 5280)
-  let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(stepsChart, weekSteps, 'Steps', fillPalette, borderPalette);
-  fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
-  weekSteps = activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
-  buildChart(minutesActiveChart, weekSteps, 'Minutes Active', fillPalette, borderPalette);
-  fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
-  buildChart(milesChart, weekMiles, 'Miles', fillPalette, borderPalette);
 }
 
 function displayStepsChart() {
-  stepsChart.classList.remove('hidden');
-  minutesActiveChart.classList.add('hidden');
-  milesChart.classList.add('hidden')
+  currentActiveChart = getNewCanvas();
+  let weekSteps = activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekSteps, 'Steps', fillPalette, borderPalette);
 }
 
 function displayMinutesActiveChart() {
-  minutesActiveChart.classList.remove('hidden')
-  stepsChart.classList.add('hidden');
-  milesChart.classList.add('hidden')
+  currentActiveChart = getNewCanvas();
+  let weekMinutes = activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
+  let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekMinutes, 'Minutes', fillPalette, borderPalette);
 }
 
 function displayMilesChart() {
-  milesChart.classList.remove('hidden')
-  minutesActiveChart.classList.add('hidden');
-  stepsChart.classList.add('hidden')
+    currentActiveChart = getNewCanvas();
+  let weekSteps = activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let weekMiles = weekSteps.map(steps => steps * currentUser.strideLength / 5280);
+  let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekMiles, 'Miles', fillPalette, borderPalette);
+}
+
+function getNewCanvas() {
+  currentActiveChart.remove();
+  document.querySelector('.activity .underlay').innerHTML += '<canvas class="activity-chart"></canvas>';
+  return document.querySelector('.activity canvas');
 }
 
 function buildChart(canvas, data, labelName, fillColor, borderColor) {
