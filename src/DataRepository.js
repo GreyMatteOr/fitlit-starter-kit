@@ -82,7 +82,7 @@ class DataRepository{
 
   getStatDailyGlobalAvg(date, stat) {
     let sum = this.data.reduce((total, datum) => total + datum[stat], 0);
-    return sum / this.data.length;
+    return Math.round(10 * sum / this.data.length) / 10;
   }
 }
 

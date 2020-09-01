@@ -13,8 +13,8 @@ var sleepChart = document.getElementById('sleep-chart');
 var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
 let currentActiveChart = document.querySelector('.activity canvas');
-let compareNodes = document.querySelectorAll('.compare>div>div');
-let activityNodes = document.querySelectorAll('.activity>div>button');
+let statNodes = document.querySelectorAll('.stat');
+let compareNodes = document.querySelectorAll('.compare-stat');
 let currentDay = moment('2019/09/22', 'YYYY/MM/DD');
 let currentUser;
 
@@ -24,10 +24,11 @@ activitySection.addEventListener('click', displayCorrectChart);
 function loadDefaults () {
   currentUser = getRandomUser();
   displayStepGoalMessage();
+  displayStats();
+  displayComparisons();
   displayHydrationChart();
   displaySleepChart();
-  displayActivity();
-  displayComparisons();
+  displayStepsChart();
 }
 
 function getRandomUser() {
@@ -75,29 +76,24 @@ function getSleepColor(quality) {
   return '#945a41'
 };
 
-function displayActivity() {
-  activityNodes.forEach((node, index) => {
+function displayStats() {
+  statNodes.forEach((node, index) => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
     let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
     if(index === 2) {
-      userStat *= currentUser.strideLength / 5280
+      userStat = Math.round(10 * userStat * currentUser.strideLength / 5280) / 10;
     }
-
-    console.log(userStat)
-    console.log(node.children[1])
-    node.children[1].innerText = `${userStat}`
+    node.innerText = `${userStat}`
   })
-  displayStepsChart();
 }
 
 function displayComparisons() {
   compareNodes.forEach(node => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
-    let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
     let globalAverage = repos[repo].getStatDailyGlobalAvg(currentDay, stat);
-    node.children[1].innerText = `You: ${userStat}\nCommunity: ${globalAverage}`
+    node.innerText = `You: ${node.innerText}\nCommunity: ${globalAverage}`;
   })
 }
 
