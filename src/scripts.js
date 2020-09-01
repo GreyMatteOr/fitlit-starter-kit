@@ -57,7 +57,8 @@ function displayHydrationChart() {
   let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
-  buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
+  let hChart = buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
+  hChart.maintainAspectRatio = false;
 };
 
 function displaySleepChart() {
