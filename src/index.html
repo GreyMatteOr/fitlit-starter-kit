@@ -19,143 +19,113 @@
       </div>
     </header>
     <main>
-      <section class='activity activity-color' id=''>
+      <section class='activity activity-color'>
         <div class='underlay'>
-          <div class='step-goal' id=''>
-            <h2 class='step-goal-title'>step goal</h2>
-            <h3 class='step-goal-stat'>stat</h3>
-          </div>
-          <div class='minutes-active' id=''>
+          <button class='steps-achieved'>
+            <h2 class='steps-achieved-title'>steps-achieved</h2>
+            <h3 class='stat' data-repo='activity' data-stat='numSteps'>stat</h3>
+          </button>
+          <button class='minutes-active'>
             <h2 class='minutes-active-title'>minutes active</h2>
-            <h3 class='minutes-active-stat'>stat</h3>
-          </div>
-          <div class='miles' id=''>
+            <h3 class='stat' data-repo='activity' data-stat='minutesActive'>stat</h3>
+          </button>
+          <button class='miles'>
             <h2 class='miles-title'>distance in miles</h2>
-            <h3 class='miles-stat'>stat</h3>
-          </div>
-          <div class='activity-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
-          <button class='activity-button'>toggle</button>
+            <h3 class='stat' data-repo='activity' data-stat='numSteps'>stat</h3>
+          </button>
+          <canvas class="activity-chart"></canvas>
         </div>
       </section>
 
-      <section class='sleep sleep-color' id=''>
+      <section class='sleep sleep-color'>
         <div class='underlay'>
-          <div class='hours-slept' id=''>
+          <div class='hours-slept'>
             <h2 class='hours-slept-title'>hours slept</h2>
-            <h3 class='hours-slept-stat'>stat</h3>
+            <h3 class='stat' data-repo='sleep' data-stat='hoursSlept'>stat</h3>
           </div>
-          <div class='sleep-quality' id=''>
+          <div class='sleep-quality'>
             <h2 class='sleep-quality-title'>quality of sleep</h2>
-            <h3 class='sleep-quality-stat'>stat</h3>
+            <h3 class='stat' data-repo='sleep' data-stat='sleepQuality'>stat</h3>
           </div>
-          <div class='sleep-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
-          <button class='sleep-quality-button'>toggle</button>
+          <canvas id="sleep-chart"></canvas>
         </div>
       </section>
 
-      <section class='hydration hydration-color' id=''>
+      <section class='hydration hydration-color'>
         <div class='underlay'>
-          <div class='ounces-drunk' id=''>
+          <div class='ounces-drunk'>
             <h2 class='ounces-drunk-title'>ounces drunk</h2>
-            <h3 class='ounces-drunk-stat'>stat</h3>
+            <h3 class='stat' data-repo='hydration' data-stat='numOunces'>stat</h3>
           </div>
-          <div class='ounces-graph' id=''>
-              <div class='sunday'>sunday</div>
-              <div class='monday'>monday</div>
-              <div class='tuesday'>tuesday</div>
-              <div class='wednesday'>wednesday</div>
-              <div class='thursday'>thursday</div>
-              <div class='friday'>friday</div>
-              <div class='saturday'>saturday</div>
-              <img src="" alt="">
-          </div>
-          <button class='ounces-drunk-button'>toggle</button>
+          <canvas id="hydration-chart"></canvas>
         </div>
       </section>
 
-      <section class='compare compare-color' id=''>
+      <section class='compare compare-color'>
         <div class='underlay compare-underlay'>
-          <div class='compare-steps-day' id=''>
+          <div class='compare-steps-day'>
             <h2 class='compare-steps-day-title'>steps for the day</h2>
-            <h3 class='compare-steps-day-stat'>stat</h3>
+            <h3 class='stat compare-stat' data-repo='activity' data-stat='numSteps'>stat</h3>
           </div>
-          <div class='compare-minutes-active' id=''>
+          <div class='compare-minutes-active'>
             <h2 class='compare-minutes-active-title'>minutes active</h2>
-            <h3 class='compare-minutes-active-stat'>stat</h3>
+            <h3 class='stat compare-stat' data-repo='activity' data-stat='minutesActive'>stat</h3>
           </div>
-          <div class='flights-of-stairs-climbed' id=''>
+          <div class='flights-of-stairs-climbed'>
             <h2 class='flights-of-stairs-climbed-title'>flights of stairs climbed</h2>
-            <h3 class='flights-of-stairs-climbed-stat'>stat</h3>
+            <h3 class='stat compare-stat' data-repo='activity' data-stat='flightsOfStairs'>stat</h3>
           </div>
-          <div class='compare-hours-slept' id=''>
+          <div class='compare-hours-slept'>
             <h2 class='compare-hours-slept-title'>hours slept</h2>
-            <h3 class='hours-slept-stat'>stat</h3>
+            <h3 class='stat compare-stat' data-repo='sleep' data-stat='hoursSlept'>stat</h3>
           </div>
-          <div class='compare-sleep-quality' id=''>
+          <div class='compare-sleep-quality'>
             <h2 class='compare-sleep-quality-title'>quality of sleep</h2>
-            <h3 class='sleep-quality-stat'>stat</h3>
+            <h3 class='stat compare-stat' data-repo='sleep' data-stat='sleepQuality'>stat</h3>
           </div>
-          <div class='compare-water-consumption' id=''>
+          <div class='compare-water-consumption'>
           <h2 class='water-consumption-title'>water consumption</h2>
-          <h3 class='water-consumption-stat'>stat</h3>
+          <h3 class='stat compare-stat' data-repo='hydration' data-stat='numOunces'>stat</h3>
         </div>
         </div>
       </section>
 
-      <section class='social social-color' id=''>
+      <section class='social social-color'>
         <div class='underlay social-underlay'>
-          <div class='friend' id=''>
+          <div class='friend'>
             <img src="" alt="person0">
               <div>
                 <h2 class='name'>name</h2>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
+                <h3 class=''>stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
               </div>
           </div>
-          <div class='friend' id=''>
+          <div class='friend'>
             <img src="" alt="person1">
               <div>
                 <h2 class='name'>name</h2>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
               </div>
           </div>
-          <div class='friend' id=''>
+          <div class='friend'>
             <img src="" alt="person2">
               <div>
                 <h2 class='name'>name</h2>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
-                <h3 class='stat'>stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
+                <h3 class='friend-stat'>friend-stat</h3>
               </div>
           </div>
-          <div class='friend' id=''>
+          <div class='friend'>
           <img src="" alt="person3">
             <div>
               <h2 class='name'>name</h2>
-              <h3 class='stat'>stat</h3>
-              <h3 class='stat'>stat</h3>
-              <h3 class='stat'>stat</h3>
+              <h3 class='friend-stat'>friend-stat</h3>
+              <h3 class='friend-stat'>friend-stat</h3>
+              <h3 class='friend-stat'>friend-stat</h3>
             </div>
         </div>
         </div>
@@ -163,7 +133,8 @@
 
     </main>
 
-    <script type="text/javascript" src="../node-modules/moment/moment.js"></script>
+    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="../node_modules/chart.js/dist/Chart.js"></script>
     <script type="text/javascript" src="../data/users.js"></script>
     <script type="text/javascript" src="../data/hydration.js"></script>
     <script type="text/javascript" src="../data/sleep.js"></script>

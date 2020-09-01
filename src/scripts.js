@@ -1,82 +1,155 @@
 let greeting = document.querySelector('h1');
-const users = new UserRepository(userData);
-const hydration = new Hydration(hydrationData);
-const sleep = new Sleep(sleepData);
-const activity = new Activity(activityData);
-window.onload = onLoad
+const repos = {
+  users : new UserRepository(userData),
+  hydration : new Hydration(hydrationData),
+  sleep : new Sleep(sleepData),
+  activity : new Activity(activityData)
+}
 
-function onLoad () {
-  let randomUser = getRandomUser();
-  displayStepGoalMessage(randomUser);
-  displayHydration(randomUser);
-  displaySleep(randomUser);
-  displayActivity(randomUser);
+var stepsChart = document.querySelector('.steps-activity-chart');
+var minutesActiveChart = document.querySelector('.minutesActive-activity-chart');
+var milesChart = document.querySelector('.miles-activity-chart');
+var sleepChart = document.getElementById('sleep-chart');
+var hydrationChart = document.getElementById('hydration-chart');
+let activitySection = document.querySelector('.activity');
+let currentActiveChart = document.querySelector('.activity canvas');
+let statNodes = document.querySelectorAll('.stat');
+let compareNodes = document.querySelectorAll('.compare-stat');
+let currentDay = moment('2019/09/22', 'YYYY/MM/DD');
+let currentUser;
+
+window.onload = loadDefaults;
+activitySection.addEventListener('click', displayCorrectChart);
+
+function loadDefaults () {
+  currentUser = getRandomUser();
+  displayStepGoalMessage();
+  displayStats();
+  displayComparisons();
+  displayHydrationChart();
+  displaySleepChart();
+  displayStepsChart();
 }
 
 function getRandomUser() {
-  let randomIndex = Math.floor(Math.random() * users.data.length);
-  return new User(users.data[randomIndex]);
+  let randomIndex = Math.floor(Math.random() * repos.users.data.length);
+  return new User(repos.users.data[randomIndex]);
 }
 
-function displayStepGoalMessage(user) {
-  let userDailyStepGoal = user.dailyStepGoal
-  let averageUsersStepGoal = users.calculateAverageStepGoal();
-  greeting.innerText = `Hello ${user.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`
-}
-
-function displayHydration(user) {
-  let lastDay = '2019/09/22';
-  let dailyHydration = hydration.findOuncesWaterOfDay(lastDay, user.id);
-  let averageHydrationOverLatestWeek = hydration.findOuncesWaterOfWeekBefore(lastDay, user.id);
-  averageHydrationOverLatestWeek.pop();
-  let message = '';
-  averageHydrationOverLatestWeek.forEach((ounces, daysAgo) => message = `
-    ${6 - daysAgo} days ago you drank ${ounces} ounces of water` + message);
-  message = `
-    Your hydration for today, ${lastDay}, is ${dailyHydration} ounces.` + message;
-  greeting.innerText += message;
+function displayCorrectChart(event) {
+  if(event.target.closest('button') === document.querySelector('.steps-achieved')) {
+    displayStepsChart();
+  } else if(event.target.closest('button') === document.querySelector('.minutes-active')) {
+    displayMinutesActiveChart();
+  } else if(event.target.closest('button') === document.querySelector('.miles')) {
+    displayMilesChart();
+  }
 };
 
-function displaySleep(user) {
-  let lastDay = '2019/09/22';
-  let recentSleepHours = sleep.getHoursOnDate(lastDay, user.id);
-  let recentSleepQuality = sleep.getQualityOnDate(lastDay, user.id);
-  let adjective = (recentSleepQuality >= 4 ? 'very deeply' : (recentSleepQuality >= 3 ? 'deeply' : (recentSleepQuality >= 2 ? 'alright' : 'poorly')));
-  greeting.innerText += `\n${user.getFirstName()} slept ${adjective} for ${recentSleepHours} hours`;
-  let latestWeekSleepHours = sleep.getWeeklyQuantity(lastDay, user.id);
-  let latestWeekSleepQuality = sleep.getWeeklyQuality(lastDay, user.id);
-  latestWeekSleepHours.reverse();
-  latestWeekSleepQuality.reverse();
-  latestWeekSleepHours.shift();
-  latestWeekSleepQuality.shift();
-  latestWeekSleepHours.forEach((quantity, day) => {
-    const quality = latestWeekSleepQuality[day];
-    greeting.innerText += `\n ${day + 1} day(s) ago, ${user.getFirstName()} slept ${quantity} hours at a ${quality} quality.`
-  })
-  let averageHours = sleep.getAverageHours(user.id);
-  let averageQuality = sleep.getAverageQuality(user.id);
-  adjective = (averageQuality >= 4 ? 'very deeply' : (averageQuality >= 3 ? 'deeply' : (averageQuality >= 2 ? 'alright' : 'poorly')));
-  greeting.innerText += `\n On average, ${user.getFirstName()} slept ${adjective} for ${averageHours} hours. `
+function displayStepGoalMessage() {
+  let userDailyStepGoal = currentUser.dailyStepGoal
+  let averageUsersStepGoal = repos.users.calculateAverageStepGoal();
+  greeting.innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`
 }
 
-function displayActivity(user) {
-  let lastDay = moment('2019/09/22', 'YYYY/MM/DD');
-  let stepsToday = activity.getStepsTaken(lastDay, user.id);
-  let avgSteps = activity.getAverageStepsOnDay(lastDay);
-  let stepsDiff = stepsToday - avgSteps;
-  let minutesToday = activity.getMinutesActive(lastDay, user.id);
-  let avgMinutes = activity.getAverageMinutesOnDay(lastDay);
-  let minutesDiff = minutesToday - avgMinutes;
-  let flightsToday = activity.getFlightsClimbed(lastDay, user.id);
-  let avgFlights = activity.getAverageFlightsOnDay(lastDay);
-  let flightsDiff = flightsToday - avgFlights;
-  greeting.innerText += `\n${user.getFirstName()} took ${stepsToday} steps today.`;
-  greeting.innerText += `\n${user.getFirstName()} worked out for ${activity.getMinutesActive(lastDay, user.id)} minutes today!`
-  greeting.innerText += `\n${user.getFirstName()} went  ${activity.getMilesWalked(lastDay, user)} mile(s) today!`
-  greeting.innerText += `\n${user.getFirstName()} took ${Math.abs(stepsDiff)} ${stepsDiff > 0? 'fewer' : 'more' } step(s) compared to the average user.`
-  greeting.innerText += `\n${user.getFirstName()} worked out ${Math.abs(minutesDiff)} minute(s) ${minutesDiff > 0? 'less' : 'longer' } than the average user.`
-  greeting.innerText += `\n${user.getFirstName()} climbed ${Math.abs(flightsDiff)} ${flightsDiff > 0? 'fewer' : 'more' } flight(s) of stairs than to the average user.`
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageStepsOverWeek(user.id, lastDay)} steps per day! `
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageFlightsOverWeek(user.id, lastDay)} flights of stairs per day! `
-  greeting.innerText += `\n${user.getFirstName()} this week, averaged ${activity.getAverageActivityOverWeek(user.id, lastDay)} minutes of activity per day! `
+function displayHydrationChart() {
+  let dailyHydration = repos.hydration.findOuncesWaterOfDay(currentDay, currentUser.id);
+  let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
+  let hChart = buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
+  hChart.maintainAspectRatio = false;
+};
+
+function displaySleepChart() {
+  let weekHours = repos.sleep.getWeeklyQuantity(currentDay, currentUser.id);
+  let weekQuality = repos.sleep.getWeeklyQuality(currentDay, currentUser.id);
+  let fillPalette = weekQuality.map((number) => getSleepColor(number));
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(sleepChart, weekHours, 'Sleep', fillPalette, borderPalette);
+};
+
+// add note that color indicates quality of sleep
+function getSleepColor(quality) {
+  if(quality > 4) return '#710e9e'
+  if(quality > 3) return '#8c5fa1'
+  if(quality > 2) return '#bd9b82'
+  return '#945a41'
+};
+
+function displayStats() {
+  statNodes.forEach((node, index) => {
+    let repo = node.dataset.repo;
+    let stat = node.dataset.stat;
+    let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
+    if(index === 2) {
+      userStat = Math.round(10 * userStat * currentUser.strideLength / 5280) / 10;
+    }
+    node.innerText = `${userStat}`
+  })
+}
+
+function displayComparisons() {
+  compareNodes.forEach(node => {
+    let repo = node.dataset.repo;
+    let stat = node.dataset.stat;
+    let globalAverage = repos[repo].getStatDailyGlobalAvg(currentDay, stat);
+    node.innerText = `You: ${node.innerText}\nCommunity: ${globalAverage}`;
+  })
+}
+
+function displayStepsChart() {
+  currentActiveChart = getNewCanvas();
+  let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekSteps, 'Steps', fillPalette, borderPalette);
+}
+
+function displayMinutesActiveChart() {
+  currentActiveChart = getNewCanvas();
+  let weekMinutes = repos.activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
+  let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekMinutes, 'Minutes', fillPalette, borderPalette);
+}
+
+function displayMilesChart() {
+  currentActiveChart = getNewCanvas();
+  let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let weekMiles = weekSteps.map(steps => steps * currentUser.strideLength / 5280);
+  let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(currentActiveChart, weekMiles, 'Miles', fillPalette, borderPalette);
+}
+
+function getNewCanvas() {
+  currentActiveChart.remove();
+  document.querySelector('.activity .underlay').innerHTML += '<canvas class="activity-chart"></canvas>';
+  return document.querySelector('.activity canvas');
+}
+
+function buildChart(canvas, data, labelName, fillColor, borderColor) {
+  return new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      datasets: [{
+        label: labelName,
+        data: data,
+        backgroundColor: fillColor,
+        borderColor: borderColor,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }

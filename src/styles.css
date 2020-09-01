@@ -50,12 +50,18 @@ section {
   min-width: min-content;
 }
 
+canvas {
+  align-self: end;
+}
+
 .underlay {
   background-color: rgb(255,255,255,.6);
   border-radius: 1em;
   max-width: 98%;
+  min-width: 34.5em;
+  min-height: 32.5em;
   display: grid;
-  grid-template-rows: 1fr 1fr 1.5em;
+  grid-template-rows: min-content 1fr 1.5em;
   box-shadow: 3px 3px 3px #888888;
   padding: .75em;
 }
@@ -72,8 +78,33 @@ section {
   margin: .5em;
 }
 
-.activity-button, .sleep-quality-button, .ounces-drunk-button {
+.activity button {
   cursor: pointer;
+  border-radius: 1em;
+}
+
+.steps-achieved:hover {
+  background-color: #f09f57;
+}
+
+.minutes-active:hover {
+  background-color: #ead96e;
+}
+
+.miles:hover {
+  background-color: #81c64a;
+}
+
+.hours-slept, .sleep-quality, .ounces-drunk,
+.compare-steps-day, .compare-minutes-active, .flights-of-stairs-climbed,
+.compare-hours-slept, .compare-sleep-quality, .compare-water-consumption {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1em;
+  border-radius: 1em;
+  width: min-content;
+  height: min-content;
+  min-width: 14.5em;
+  align-self: center;
 }
 
 .header-button {
@@ -94,31 +125,27 @@ section {
   background-color: #FF9181;
 }
 
-.step-goal {
+.steps-achieved {
   grid-row: 1;
   margin: 1em;
+  background-color: #e88126;
 }
 
 .minutes-active {
   grid-row: 1;
   margin: 1em;
+  background-color: #f0d630;
 }
 
 .miles {
   grid-row: 1;
   margin: 1em;
+  background-color: #458511;
 }
 
-.activity-graph {
+.activity canvas {
   grid-row: 2;
   grid-column: 1 / span 4;
-  display: grid;
-  grid-template-columns: repeat(7,auto .5fr);
-  align-content: end;
-}
-
-.activity-button {
-  grid-row: 3;
 }
 
 .sleep {
@@ -148,16 +175,8 @@ section {
   grid-column: 3;
 }
 
-.sleep-graph {
+#sleep-chart {
   grid-row: 2;
-  grid-column: 1 / span 3;
-  display: grid;
-  grid-template-columns: repeat(7,auto .5fr);
-  align-content: end;
-}
-
-.sleep-quality-button {
-  grid-row: 3;
   grid-column: 1 / span 3;
 }
 
@@ -173,17 +192,11 @@ section {
 
 .ounces-drunk{
   grid-row: 1;
+  justify-self: center;
 }
 
-.ounces-graph {
+#hydration-chart {
   grid-row: 2;
-  display: grid;
-  grid-template-columns: repeat(7,auto .5fr);
-  align-content: end;
-}
-
-.ounces-drunk-button {
-  grid-row: 3;
 }
 
 .compare {
