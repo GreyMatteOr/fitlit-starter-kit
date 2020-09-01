@@ -14,6 +14,7 @@ var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
 let currentActiveChart = document.querySelector('.activity canvas');
 let compareNodes = document.querySelectorAll('.compare>div>div');
+let activityNodes = document.querySelectorAll('.activity>div>button');
 let currentDay = moment('2019/09/22', 'YYYY/MM/DD');
 let currentUser;
 
@@ -25,7 +26,7 @@ function loadDefaults () {
   displayStepGoalMessage();
   displayHydrationChart();
   displaySleepChart();
-  displayStepsChart();
+  displayActivity();
   displayComparisons();
 }
 
@@ -75,6 +76,19 @@ function getSleepColor(quality) {
 };
 
 function displayActivity() {
+  activityNodes.forEach((node, index) => {
+    let repo = node.dataset.repo;
+    let stat = node.dataset.stat;
+    let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
+    if(index === 2) {
+      userStat *= currentUser.strideLength / 5280
+    }
+
+    console.log(userStat)
+    console.log(node.children[1])
+    node.children[1].innerText = `${userStat}`
+  })
+  displayStepsChart();
 }
 
 function displayComparisons() {
