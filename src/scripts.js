@@ -1,5 +1,5 @@
 let greeting = document.querySelector('h1');
-const dataRepositories = {
+const repos = {
   users : new UserRepository(userData),
   hydration : new Hydration(hydrationData),
   sleep : new Sleep(sleepData),
@@ -30,8 +30,8 @@ function loadDefaults () {
 }
 
 function getRandomUser() {
-  let randomIndex = Math.floor(Math.random() * dataRepositories.users.data.length);
-  return new User(dataRepositories.users.data[randomIndex]);
+  let randomIndex = Math.floor(Math.random() * repos.users.data.length);
+  return new User(repos.users.data[randomIndex]);
 }
 
 function displayCorrectChart(event) {
@@ -46,21 +46,21 @@ function displayCorrectChart(event) {
 
 function displayStepGoalMessage() {
   let userDailyStepGoal = currentUser.dailyStepGoal
-  let averageUsersStepGoal = dataRepositories.users.calculateAverageStepGoal();
+  let averageUsersStepGoal = repos.users.calculateAverageStepGoal();
   greeting.innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`
 }
 
 function displayHydrationChart() {
-  let dailyHydration = dataRepositories.hydration.findOuncesWaterOfDay(currentDay, currentUser.id);
-  let hydrationWeekData = dataRepositories.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
+  let dailyHydration = repos.hydration.findOuncesWaterOfDay(currentDay, currentUser.id);
+  let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
   buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
 };
 
 function displaySleepChart() {
-  let weekHours = dataRepositories.sleep.getWeeklyQuantity(currentDay, currentUser.id);
-  let weekQuality = dataRepositories.sleep.getWeeklyQuality(currentDay, currentUser.id);
+  let weekHours = repos.sleep.getWeeklyQuantity(currentDay, currentUser.id);
+  let weekQuality = repos.sleep.getWeeklyQuality(currentDay, currentUser.id);
   let fillPalette = weekQuality.map((number) => getSleepColor(number));
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   buildChart(sleepChart, weekHours, 'Sleep', fillPalette, borderPalette);
@@ -81,15 +81,15 @@ function displayComparisons() {
   compareNodes.forEach(node => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
-    let userStat = dataRepositories[repo].getDayStat(currentDay, currentUser.id, stat);
-    let globalAverage = dataRepositories[repo].getStatDailyGlobalAvg(currentDay, stat);
+    let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
+    let globalAverage = repos[repo].getStatDailyGlobalAvg(currentDay, stat);
     node.children[1].innerText = `You: ${userStat}\nCommunity: ${globalAverage}`
   })
 }
 
 function displayStepsChart() {
   currentActiveChart = getNewCanvas();
-  let weekSteps = dataRepositories.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   buildChart(currentActiveChart, weekSteps, 'Steps', fillPalette, borderPalette);
@@ -97,7 +97,7 @@ function displayStepsChart() {
 
 function displayMinutesActiveChart() {
   currentActiveChart = getNewCanvas();
-  let weekMinutes = dataRepositories.activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
+  let weekMinutes = repos.activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
   let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   buildChart(currentActiveChart, weekMinutes, 'Minutes', fillPalette, borderPalette);
@@ -105,7 +105,7 @@ function displayMinutesActiveChart() {
 
 function displayMilesChart() {
   currentActiveChart = getNewCanvas();
-  let weekSteps = dataRepositories.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
+  let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let weekMiles = weekSteps.map(steps => steps * currentUser.strideLength / 5280);
   let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
