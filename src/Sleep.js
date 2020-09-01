@@ -6,11 +6,6 @@ if (typeof(module) !== 'undefined') {
 class Sleep extends DataRepository{
   constructor(data) {
     super(data);
-    this.uniqueIDs = this.data.reduce((userIDs, data) => {
-      userIDs.add(data.userID);
-      return userIDs;
-    }, new Set());
-    this.uniqueIDs = Array.from(this.uniqueIDs);
   };
 
   getAverageHours(id) {

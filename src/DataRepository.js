@@ -11,6 +11,11 @@ class DataRepository{
       return datum;
     });
     this.trackedUsers = {};
+    this.uniqueIDs = this.data.reduce((userIDs, data) => {
+      userIDs.add(data.userID);
+      return userIDs;
+    }, new Set());
+    this.uniqueIDs = Array.from(this.uniqueIDs);
   }
 
   getUserData(id) {
@@ -73,6 +78,11 @@ class DataRepository{
       return sum;
     }, 0);
     return total / userData.length;
+  }
+
+  getStatDailyGlobalAvg(date, stat) {
+    let sum = this.data.reduce((total, datum) => total + datum[stat], 0);
+    return sum / this.data.length;
   }
 }
 
