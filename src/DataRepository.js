@@ -4,10 +4,14 @@ if (typeof(module) !== 'undefined') {
 
 class DataRepository{
   constructor(data) {
+    this.earliestDay = moment(data[0].date, 'YYYY/MM/DD');
+    this.lastDay = moment(data[0].date, 'YYYY/MM/DD');
     this.data = data.map((datum) => {
-      if(datum.date.__proto__.constructor.name !== 'Date') {
+      if (datum.date.__proto__.constructor.name !== 'Date') {
         datum.date = moment(datum.date, 'YYYY/MM/DD');
       }
+      if (moment(datum.date).isBefore(this.earliestDay)) this.earliestDay = datum.date;
+      if (moment(datum.date).isAfter(this.lastDay)) this.lastDay = datum.date;
       return datum;
     });
     this.trackedUsers = {};
@@ -16,6 +20,17 @@ class DataRepository{
       return userIDs;
     }, new Set());
     this.uniqueIDs = Array.from(this.uniqueIDs);
+  }
+  getEarliestDayString() {
+    let output = this.earliestDay._i.replace('/', '-');
+    output = this.earliestDay._i.replace('/', '-');
+    return output;
+  }
+
+    getLastDayString() {
+    let output = this.lastDay._i.replace('/', '-');
+    output = this.lastDay._i.replace('/', '-');
+    return output;
   }
 
   getUserData(id) {
