@@ -1,6 +1,6 @@
 if (typeof(module) !== 'undefined') {
-  const moment = require('moment');
-  const DataRepository = require('./DataRepository.js');
+  var moment = require('moment');
+  var DataRepository = require('./DataRepository.js');
 }
 
 class Activity extends DataRepository {
