@@ -13,8 +13,6 @@ var sleepChart = document.getElementById('sleep-chart');
 var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
 let currentActiveChart = document.querySelector('.activity canvas');
-let statNodes = document.querySelectorAll('.stat');
-let compareNodes = document.querySelectorAll('.compare-stat');
 let calendar = document.querySelector('#calendar');
 let currentDay= repos.activity.lastDay;
 let currentUser;
@@ -88,7 +86,7 @@ function getSleepColor(quality) {
 };
 
 function displayStats() {
-  statNodes.forEach((node, index) => {
+  document.querySelectorAll('.stat').forEach((node, index) => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
     let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
@@ -100,7 +98,7 @@ function displayStats() {
 }
 
 function displayComparisons() {
-  compareNodes.forEach(node => {
+   document.querySelectorAll('.compare-stat').forEach(node => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
     let globalAverage = repos[repo].getStatDailyGlobalAvg(currentDay, stat);
