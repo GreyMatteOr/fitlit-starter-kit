@@ -1,11 +1,9 @@
-let greeting = document.querySelector('h1');
 const repos = {
   users : new UserRepository(userData),
   hydration : new Hydration(hydrationData),
   sleep : new Sleep(sleepData),
   activity : new Activity(activityData)
 }
-
 var stepsChart = document.querySelector('.steps-activity-chart');
 var minutesActiveChart = document.querySelector('.minutesActive-activity-chart');
 var milesChart = document.querySelector('.miles-activity-chart');
@@ -13,17 +11,19 @@ var sleepChart = document.getElementById('sleep-chart');
 var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
 let currentActiveChart = document.querySelector('.activity canvas');
-let calendar = document.querySelector('#calendar');
 let currentDay= repos.activity.lastDay;
 let currentUser;
 
-window.onload = updatePage;
+window.onload = () => {
+  updatePage();
+  createCalendar();
+  displayFriends();
+}
 activitySection.addEventListener('click', displayCorrectChart);
 
 function updatePage () {
   currentUser = getRandomUser();
   updateCurrentDate();
-  createCalendar();
   displayStepGoalMessage();
   displayStats();
   displayComparisons();
@@ -40,7 +40,7 @@ function getRandomUser() {
 function createCalendar() {
   let minDate = repos.activity.getEarliestDayString();
   let maxDate = repos.activity.getLastDayString();
-  flatpickr(calendar,
+  flatpickr('#calendar',
     {
       dateFormat: 'Y-m-d',
       minDate : minDate,
@@ -48,6 +48,28 @@ function createCalendar() {
       onChange: changeCurrentDay
     }
   );
+}
+
+function displayFriends() {
+  let socialNode = document.querySelector('.social-underlay');
+  socialNode.innerHTML = '';
+  currentUser.friends.forEach(friendID => {
+    let pictureFile = `../docs/HS${friendID}.jpeg`;
+    let friend = repos.users.getUser(friendID);
+    let numSteps = repos.activity.getStepsTaken(currentDay, friendID);
+    let percent = Math.floor( 10 * numSteps / friend.dailyStepGoal) / 10;
+    console.log(pictureFile, friend, numSteps)
+    let newFriendHTML = `<div class='friend'>
+      <img src="${pictureFile}" alt="${friend.name}">
+        <div>
+          <h2>${friend.name}</h2>
+          <h3=''>Steps</h3>
+          <h3>Today: ${numSteps}</h3>
+          <h3>Percent of Goal: ${percent}</h3>
+        </div>
+    </div>`;
+    socialNode.innerHTML += newFriendHTML;
+  })
 }
 
 function updateCurrentDate() {
@@ -72,12 +94,14 @@ function displayCorrectChart(event) {
 };
 
 function displayStepGoalMessage() {
-  let userDailyStepGoal = currentUser.dailyStepGoal
+  let profilePic = `../docs/HS${currentUser.id}.jpeg`;
+  let newHtml = `<img class='profile-picture' alt='profile-picture' src='${profilePic}'>`;
+  document.querySelector('header').innerHTML = newHtml + document.querySelector('header').innerHTML;
+  let userDailyStepGoal = currentUser.dailyStepGoal;
   let averageUsersStepGoal = repos.users.calculateAverageStepGoal();
-  greeting.innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`
+  document.querySelector('h1').innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`;
 }
 
-// add note that color indicates quality of sleep
 function getSleepColor(quality) {
   if(quality > 4) return '#710e9e'
   if(quality > 3) return '#8c5fa1'

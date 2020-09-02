@@ -32,6 +32,15 @@ header {
   align-self: center;
 }
 
+.profile-picture {
+  align-self: center;
+  height: 8em;
+  width: auto;
+  border-radius: 1em;
+  box-shadow: 3px 3px 3px #888888;
+  margin: .75em 1.5em;
+}
+
 h1 {
   font-size: 2em;
   margin: 1em;
@@ -255,6 +264,13 @@ canvas {
 .friend>img, .friend>div {
   align-self: center;
   margin: 1em;
+}
+
+.friend>img {
+  width: auto;
+  height: 10em;
+  border-radius: 1em;
+  box-shadow: 3px 3px 3px #888888;
 }
 
 .flatpickr-calendar {
