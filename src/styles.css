@@ -18,7 +18,7 @@ header {
   display: flex;
   justify-content: space-around;
   background-color: lightgrey;
-  width: 98%;
+  width: 100%;
   padding-bottom: .25em;
 }
 
@@ -29,12 +29,50 @@ header {
 }
 
 #icon>img {
+  align-self: flex-end;
+  max-height: 3em;
+  width: auto;
+  margin-bottom: 1.5em;
+}
+
+#icon>h3 {
+  font-size: 1.5em;
+  margin-right: 2em;
+}
+
+.profile-picture {
   align-self: center;
+  height: 8em;
+  width: auto;
+  border-radius: 1em;
+  box-shadow: 3px 3px 3px #888888;
+  margin: .75em 1.5em;
 }
 
 h1 {
   font-size: 2em;
   margin: 1em;
+  display: flex;
+  align-self: flex-end;
+}
+
+#calendar {
+  display: flex;
+  min-width: 8em;
+  min-height: 8em;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  background: url('../docs/calendar-icon.png');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: .25em;
+  box-shadow: 3px 3px 3px #888;
+}
+
+#current-day{
+  width: 100%;
 }
 
 main {
@@ -158,6 +196,7 @@ canvas {
 .sleep>.underlay {
   display: grid;
   grid-template-columns: 1fr 1em 1fr;
+  grid-template-rows: min-content min-content 1fr 1.5em;
 }
 
 .sleep-color{
@@ -177,8 +216,16 @@ canvas {
   grid-column: 3;
 }
 
-.sleep-chart {
+.sleep-key {
+  grid-column: 1 / span 3;
   grid-row: 2;
+  justify-self: center;
+  width: 100%;
+  height: auto;
+}
+
+.sleep-chart {
+  grid-row: 3;
   grid-column: 1 / span 3;
 }
 
@@ -248,6 +295,17 @@ canvas {
   margin: 1em;
 }
 
+.friend>img {
+  width: auto;
+  height: 10em;
+  border-radius: 1em;
+  box-shadow: 3px 3px 3px #888888;
+}
+
 .flatpickr-calendar {
     width: 23em;
+}
+
+@@media query  {
+
 }

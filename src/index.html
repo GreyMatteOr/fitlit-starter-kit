@@ -11,10 +11,12 @@
   <body>
     <header>
       <h1>NAME</h1>
-      <time id='current-day' datetime="2008-02-14 20:00">Date</time>
-      <button id='calendar'></button>
+
+      <button id='calendar'>
+        <time id='current-day'  datetime="2008-02-14 20:00">Date</time>
+      </button>
       <div id='icon'>
-        <img src="" alt="icon">
+        <img src="../docs/fitlit-icon.png" alt="icon">
         <h3>fitlit</h3>
       </div>
     </header>
@@ -47,6 +49,7 @@
             <h2 class='sleep-quality-title'>quality of sleep</h2>
             <h3 class='stat' data-repo='sleep' data-stat='sleepQuality'>stat</h3>
           </div>
+          <img class='sleep-key' src="../docs/sleep-key.png" alt="sleep-key">
           <canvas id="sleep-chart"></canvas>
         </div>
       </section>
