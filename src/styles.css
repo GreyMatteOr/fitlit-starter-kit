@@ -18,7 +18,7 @@ header {
   display: flex;
   justify-content: space-around;
   background-color: lightgrey;
-  width: 98%;
+  width: 100%;
   padding-bottom: .25em;
 }
 
@@ -29,7 +29,15 @@ header {
 }
 
 #icon>img {
-  align-self: center;
+  align-self: flex-end;
+  max-height: 3em;
+  width: auto;
+  margin-bottom: 1.5em;
+}
+
+#icon>h3 {
+  font-size: 1.5em;
+  margin-right: 2em;
 }
 
 .profile-picture {
@@ -44,6 +52,27 @@ header {
 h1 {
   font-size: 2em;
   margin: 1em;
+  display: flex;
+  align-self: flex-end;
+}
+
+#calendar {
+  display: flex;
+  min-width: 8em;
+  min-height: 8em;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  background: url('../docs/calendar-icon.png');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: .25em;
+  box-shadow: 3px 3px 3px #888;
+}
+
+#current-day{
+  width: 100%;
 }
 
 main {
@@ -275,4 +304,8 @@ canvas {
 
 .flatpickr-calendar {
     width: 23em;
+}
+
+@@media query  {
+
 }

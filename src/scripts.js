@@ -15,21 +15,21 @@ let currentDay= repos.activity.lastDay;
 let currentUser;
 
 window.onload = () => {
+  currentUser = getRandomUser();
+  displayStepGoalMessage();
   updatePage();
-  createCalendar();
   displayFriends();
 }
 activitySection.addEventListener('click', displayCorrectChart);
 
 function updatePage () {
-  currentUser = getRandomUser();
   updateCurrentDate();
-  displayStepGoalMessage();
   displayStats();
   displayComparisons();
   displayHydrationChart();
   displaySleepChart();
   displayStepsChart();
+  createCalendar();
 }
 
 function getRandomUser() {
@@ -57,7 +57,7 @@ function displayFriends() {
     let pictureFile = `../docs/HS${friendID}.jpeg`;
     let friend = repos.users.getUser(friendID);
     let numSteps = repos.activity.getStepsTaken(currentDay, friendID);
-    let percent = Math.floor( 10 * numSteps / friend.dailyStepGoal) / 10;
+    let percent = Math.floor( 1000 * numSteps / friend.dailyStepGoal) / 10;
     console.log(pictureFile, friend, numSteps)
     let newFriendHTML = `<div class='friend'>
       <img src="${pictureFile}" alt="${friend.name}">
@@ -74,13 +74,16 @@ function displayFriends() {
 
 function updateCurrentDate() {
   let dateNode = document.querySelector('time');
-  dateNode.dateTime = currentDay._i;
-  dateNode.innerText = currentDay._i;
+  let date = currentDay._i;
+  while(date.includes('/')) date = date.replace('/', '-');
+  let show = `${date.split('-')[1]}/${date.split('-')[2]}`;
+  dateNode.dateTime = date;
+  dateNode.innerText = show;
 }
 
 function changeCurrentDay(selectedDates, dateString, thisObj) {
   currentDay = moment(dateString, 'YYYY-MM-DD');
-  updatePage(dateString);
+  updatePage();
 }
 
 function displayCorrectChart(event) {
@@ -97,9 +100,9 @@ function displayStepGoalMessage() {
   let profilePic = `../docs/HS${currentUser.id}.jpeg`;
   let newHtml = `<img class='profile-picture' alt='profile-picture' src='${profilePic}'>`;
   document.querySelector('header').innerHTML = newHtml + document.querySelector('header').innerHTML;
-  let userDailyStepGoal = currentUser.dailyStepGoal;
-  let averageUsersStepGoal = repos.users.calculateAverageStepGoal();
-  document.querySelector('h1').innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`;
+  let userStepGoal = currentUser.dailyStepGoal;
+  let userSteps = repos.activity.getStepsTaken(currentDay, currentUser.id);
+  document.querySelector('h1').innerText = `Hello ${currentUser.getFirstName()}! Today, you have ${(userStepGoal > userSteps ? `${userStepGoal - userSteps} steps to go until you meet` : 'reached')} your step goal of ${userStepGoal} steps.`;
 }
 
 function getSleepColor(quality) {
