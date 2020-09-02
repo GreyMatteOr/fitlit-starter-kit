@@ -4,10 +4,14 @@ if (typeof(module) !== 'undefined') {
 
 class DataRepository{
   constructor(data) {
+    this.earliestDay = moment(data[0].date, 'YYYY/MM/DD');
+    this.lastDay = moment(data[0].date, 'YYYY/MM/DD');
     this.data = data.map((datum) => {
-      if(datum.date.__proto__.constructor.name !== 'Date') {
+      if (datum.date.__proto__.constructor.name !== 'Date') {
         datum.date = moment(datum.date, 'YYYY/MM/DD');
       }
+      if (moment(datum.date).isBefore(this.earliestDay)) this.earliestDay = datum.date;
+      if (moment(datum.date).isAfter(this.lastDay)) this.lastDay = datum.date;
       return datum;
     });
     this.trackedUsers = {};
@@ -16,6 +20,17 @@ class DataRepository{
       return userIDs;
     }, new Set());
     this.uniqueIDs = Array.from(this.uniqueIDs);
+  }
+  getEarliestDayString() {
+    let output = this.earliestDay._i.replace('/', '-');
+    output = this.earliestDay._i.replace('/', '-');
+    return output;
+  }
+
+    getLastDayString() {
+    let output = this.lastDay._i.replace('/', '-');
+    output = this.lastDay._i.replace('/', '-');
+    return output;
   }
 
   getUserData(id) {
@@ -81,8 +96,14 @@ class DataRepository{
   }
 
   getStatDailyGlobalAvg(date, stat) {
-    let sum = this.data.reduce((total, datum) => total + datum[stat], 0);
-    return Math.round(10 * sum / this.data.length) / 10;
+    let sum = this.data.reduce((total, datum) => {
+      if(moment(date).isSame(datum.date)) {
+        total.total += datum[stat]
+        total.count++
+      }
+      return total
+    }, {total: 0, count: 0});
+    return Math.round(10 * sum.total / sum.count) / 10;
   }
 }
 

@@ -13,16 +13,17 @@ var sleepChart = document.getElementById('sleep-chart');
 var hydrationChart = document.getElementById('hydration-chart');
 let activitySection = document.querySelector('.activity');
 let currentActiveChart = document.querySelector('.activity canvas');
-let statNodes = document.querySelectorAll('.stat');
-let compareNodes = document.querySelectorAll('.compare-stat');
-let currentDay = moment('2019/09/22', 'YYYY/MM/DD');
+let calendar = document.querySelector('#calendar');
+let currentDay= repos.activity.lastDay;
 let currentUser;
 
-window.onload = loadDefaults;
+window.onload = updatePage;
 activitySection.addEventListener('click', displayCorrectChart);
 
-function loadDefaults () {
+function updatePage () {
   currentUser = getRandomUser();
+  updateCurrentDate();
+  createCalendar();
   displayStepGoalMessage();
   displayStats();
   displayComparisons();
@@ -34,6 +35,30 @@ function loadDefaults () {
 function getRandomUser() {
   let randomIndex = Math.floor(Math.random() * repos.users.data.length);
   return new User(repos.users.data[randomIndex]);
+}
+
+function createCalendar() {
+  let minDate = repos.activity.getEarliestDayString();
+  let maxDate = repos.activity.getLastDayString();
+  flatpickr(calendar,
+    {
+      dateFormat: 'Y-m-d',
+      minDate : minDate,
+      maxDate: maxDate,
+      onChange: changeCurrentDay
+    }
+  );
+}
+
+function updateCurrentDate() {
+  let dateNode = document.querySelector('time');
+  dateNode.dateTime = currentDay._i;
+  dateNode.innerText = currentDay._i;
+}
+
+function changeCurrentDay(selectedDates, dateString, thisObj) {
+  currentDay = moment(dateString, 'YYYY-MM-DD');
+  updatePage(dateString);
 }
 
 function displayCorrectChart(event) {
@@ -52,23 +77,6 @@ function displayStepGoalMessage() {
   greeting.innerText = `Hello ${currentUser.getFirstName()}! Your step goal of ${userDailyStepGoal} is ${(userDailyStepGoal > averageUsersStepGoal) ? 'more than' : 'close to'} the average step goal among users of ${averageUsersStepGoal}.`
 }
 
-function displayHydrationChart() {
-  let dailyHydration = repos.hydration.findOuncesWaterOfDay(currentDay, currentUser.id);
-  let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
-  let hChart = buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
-  hChart.maintainAspectRatio = false;
-};
-
-function displaySleepChart() {
-  let weekHours = repos.sleep.getWeeklyQuantity(currentDay, currentUser.id);
-  let weekQuality = repos.sleep.getWeeklyQuality(currentDay, currentUser.id);
-  let fillPalette = weekQuality.map((number) => getSleepColor(number));
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(sleepChart, weekHours, 'Sleep', fillPalette, borderPalette);
-};
-
 // add note that color indicates quality of sleep
 function getSleepColor(quality) {
   if(quality > 4) return '#710e9e'
@@ -78,7 +86,7 @@ function getSleepColor(quality) {
 };
 
 function displayStats() {
-  statNodes.forEach((node, index) => {
+  document.querySelectorAll('.stat').forEach((node, index) => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
     let userStat = repos[repo].getDayStat(currentDay, currentUser.id, stat);
@@ -90,7 +98,7 @@ function displayStats() {
 }
 
 function displayComparisons() {
-  compareNodes.forEach(node => {
+   document.querySelectorAll('.compare-stat').forEach(node => {
     let repo = node.dataset.repo;
     let stat = node.dataset.stat;
     let globalAverage = repos[repo].getStatDailyGlobalAvg(currentDay, stat);
@@ -99,7 +107,7 @@ function displayComparisons() {
 }
 
 function displayStepsChart() {
-  currentActiveChart = getNewCanvas();
+  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
@@ -107,7 +115,7 @@ function displayStepsChart() {
 }
 
 function displayMinutesActiveChart() {
-  currentActiveChart = getNewCanvas();
+  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekMinutes = repos.activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
   let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
@@ -115,7 +123,7 @@ function displayMinutesActiveChart() {
 }
 
 function displayMilesChart() {
-  currentActiveChart = getNewCanvas();
+  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let weekMiles = weekSteps.map(steps => steps * currentUser.strideLength / 5280);
   let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
@@ -123,10 +131,29 @@ function displayMilesChart() {
   buildChart(currentActiveChart, weekMiles, 'Miles', fillPalette, borderPalette);
 }
 
-function getNewCanvas() {
-  currentActiveChart.remove();
-  document.querySelector('.activity .underlay').innerHTML += '<canvas class="activity-chart"></canvas>';
-  return document.querySelector('.activity canvas');
+
+function displaySleepChart() {
+  sleepChart = getNewCanvas(sleepChart, '.sleep .underlay', 'sleep-chart');
+  let weekHours = repos.sleep.getWeeklyQuantity(currentDay, currentUser.id);
+  let weekQuality = repos.sleep.getWeeklyQuality(currentDay, currentUser.id);
+  let fillPalette = weekQuality.map((number) => getSleepColor(number));
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  buildChart(sleepChart, weekHours, 'Sleep', fillPalette, borderPalette);
+};
+
+function displayHydrationChart() {
+  hydrationChart = getNewCanvas(hydrationChart, '.hydration .underlay', 'hydration-chart');
+  let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
+  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
+  let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
+  let hChart = buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
+};
+
+
+function getNewCanvas(chartNode, parentSelector, selfSelector) {
+  chartNode.remove();
+  document.querySelector(parentSelector).innerHTML += `<canvas class="${selfSelector}"></canvas>`;
+  return document.querySelector(`.${selfSelector}`);
 }
 
 function buildChart(canvas, data, labelName, fillColor, borderColor) {

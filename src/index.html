@@ -11,8 +11,8 @@
   <body>
     <header>
       <h1>NAME</h1>
-      <h1>Date</h1>
-      <button class='header-button'>toggle</button>
+      <time id='current-day' datetime="2008-02-14 20:00">Date</time>
+      <button id='calendar'></button>
       <div id='icon'>
         <img src="" alt="icon">
         <h3>fitlit</h3>
@@ -133,8 +133,9 @@
 
     </main>
 
-    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="../node_modules/chart.js/dist/Chart.js"></script>
+    <script type="text/javascript" src="../node_modules/flatpickr/dist/flatpickr.js"></script>
+    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="../data/users.js"></script>
     <script type="text/javascript" src="../data/hydration.js"></script>
     <script type="text/javascript" src="../data/sleep.js"></script>
