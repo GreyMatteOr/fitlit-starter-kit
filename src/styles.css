@@ -307,6 +307,23 @@ canvas {
     width: 23em;
 }
 
-@@media query  {
+@media screen and (max-width: 1210px)  {
 
+  body {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 990px)  {
+
+  body {
+    font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 850px)  {
+
+  body {
+    font-size: 9px;
+  }
 }
