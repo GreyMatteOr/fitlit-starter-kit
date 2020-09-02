@@ -4,14 +4,9 @@ const repos = {
   sleep : new Sleep(sleepData),
   activity : new Activity(activityData)
 }
-var stepsChart = document.querySelector('.steps-activity-chart');
-var minutesActiveChart = document.querySelector('.minutesActive-activity-chart');
-var milesChart = document.querySelector('.miles-activity-chart');
-var sleepChart = document.getElementById('sleep-chart');
-var hydrationChart = document.getElementById('hydration-chart');
+
 let activitySection = document.querySelector('.activity');
-let currentActiveChart = document.querySelector('.activity canvas');
-let currentDay= repos.activity.lastDay;
+let currentDay = repos.activity.lastDay;
 let currentUser;
 
 window.onload = () => {
@@ -20,6 +15,7 @@ window.onload = () => {
   updatePage();
   displayFriends();
 }
+
 activitySection.addEventListener('click', displayCorrectChart);
 
 function updatePage () {
@@ -58,7 +54,6 @@ function displayFriends() {
     let friend = repos.users.getUser(friendID);
     let numSteps = repos.activity.getStepsTaken(currentDay, friendID);
     let percent = Math.floor( 1000 * numSteps / friend.dailyStepGoal) / 10;
-    console.log(pictureFile, friend, numSteps)
     let newFriendHTML = `<div class='friend'>
       <img src="${pictureFile}" alt="${friend.name}">
         <div>
@@ -134,46 +129,71 @@ function displayComparisons() {
 }
 
 function displayStepsChart() {
-  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(currentActiveChart, weekSteps, 'Steps', fillPalette, borderPalette);
+  let borderPalette = ['#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402'];
+  buildChart(
+    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    weekSteps,
+    'Steps',
+    fillPalette,
+    borderPalette
+  );
 }
 
 function displayMinutesActiveChart() {
-  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekMinutes = repos.activity.getWeekStats(currentUser.id, 'minutesActive', currentDay);
   let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(currentActiveChart, weekMinutes, 'Minutes', fillPalette, borderPalette);
+  let borderPalette = ['#574b00', '#574b00', '#574b00', '#574b00', '#574b00', '#574b00', '#574b00'];
+  buildChart(
+    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    weekMinutes,
+    'Minutes',
+    fillPalette,
+    borderPalette
+  );
 }
 
 function displayMilesChart() {
-  currentActiveChart = getNewCanvas(currentActiveChart, '.activity .underlay', 'activity-chart');
   let weekSteps = repos.activity.getWeekStats(currentUser.id, 'numSteps', currentDay);
   let weekMiles = weekSteps.map(steps => steps * currentUser.strideLength / 5280);
   let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(currentActiveChart, weekMiles, 'Miles', fillPalette, borderPalette);
+  let borderPalette = ['#132900', '#132900', '#132900', '#132900', '#132900', '#132900', '#132900'];
+  buildChart(
+    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    weekMiles,
+    'Miles',
+    fillPalette,
+    borderPalette
+  );
 }
 
 
 function displaySleepChart() {
-  sleepChart = getNewCanvas(sleepChart, '.sleep .underlay', 'sleep-chart');
   let weekHours = repos.sleep.getWeeklyQuantity(currentDay, currentUser.id);
   let weekQuality = repos.sleep.getWeeklyQuality(currentDay, currentUser.id);
   let fillPalette = weekQuality.map((number) => getSleepColor(number));
-  let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
-  buildChart(sleepChart, weekHours, 'Sleep', fillPalette, borderPalette);
+  let borderPalette = ['#000', '#000', '#000', '#000', '#000', '#000', '#000'];
+  buildChart(
+    getNewCanvas(document.getElementById('sleep-chart'), '.sleep .underlay', 'sleep-chart'),
+    weekHours,
+    'Sleep',
+    fillPalette,
+    borderPalette
+  );
 };
 
 function displayHydrationChart() {
-  hydrationChart = getNewCanvas(hydrationChart, '.hydration .underlay', 'hydration-chart');
   let hydrationWeekData = repos.hydration.findOuncesWaterOfWeekBefore(currentDay, currentUser.id);
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
-  let hChart = buildChart(hydrationChart, hydrationWeekData, 'Hydration', fillPalette, borderPalette);
+  let hChart = buildChart(
+    getNewCanvas(document.getElementById('hydration-chart'), '.hydration .underlay', 'hydration-chart'),
+    hydrationWeekData,
+    'Hydration',
+    fillPalette,
+    borderPalette
+  );
 };
 
 

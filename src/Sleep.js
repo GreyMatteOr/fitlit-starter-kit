@@ -1,7 +1,7 @@
-if (typeof module !== 'undefined') {
-  var moment = require('moment');
-  var DataRepository = require('./DataRepository.js');
-}
+// if (typeof module !== 'undefined') {
+//   var moment = require('moment');
+//   var DataRepository = require('./DataRepository.js');
+// }
 
 class Sleep extends DataRepository {
   constructor(data) {

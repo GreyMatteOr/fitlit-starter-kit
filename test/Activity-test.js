@@ -3,7 +3,7 @@ const expect = chai.expect;
 const moment = require("moment");
 
 
-const Activity = require('../src/Activity');
+const Activity = require('../src/Activity.js');
 
 describe('Activity', function() {
 

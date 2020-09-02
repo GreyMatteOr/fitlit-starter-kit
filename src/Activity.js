@@ -1,7 +1,7 @@
-if (typeof(module) !== 'undefined') {
-  var moment = require('moment');
-  var DataRepository = require('./DataRepository.js');
-}
+// if (typeof module !== 'undefined') {
+//   var moment = require('moment');
+//   var DataRepository = require('./DataRepository.js');
+// }
 
 class Activity extends DataRepository {
   constructor(data) {
@@ -92,6 +92,6 @@ class Activity extends DataRepository {
   }
 }
 
-if (typeof(module) !== 'undefined') {
+if (typeof module !== 'undefined') {
   module.exports = Activity;
 }
