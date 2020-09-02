@@ -102,10 +102,9 @@ describe('Hydration', function() {
       expect(hydration.calculateAverageHydration(1)).to.equal(507 / 7);
     });
 
-    it('should return 0 when there is no Hydration data', function() {
-      hydration.data = [];
-
-      expect(hydration.calculateAverageHydration()).to.equal(0);
+    it('should return null when there is no Hydration data', function() {
+      hydration.data = []
+      expect(hydration.calculateAverageHydration()).to.equal(null);
     });
   });
 

@@ -281,6 +281,11 @@ describe('Sleep', function() {
       expect(averages[0]).to.be.closeTo(23.8 / 7, .0001);
       expect(averages[1]).to.be.closeTo(24.7 / 7, .0001);
     });
+
+    it('should return an empty array if there are no users', function() {
+      sleep.data = []
+      expect(sleep.getAverageQualityAll()).to.deep.equal([]);
+    });
   });
 
   describe('findHighQualityUsers()', function() {
@@ -318,6 +323,12 @@ describe('Sleep', function() {
       sleep = new Sleep(sleepUserData);
       let date = moment("2019/06/21", 'YYYY/MM/DD');
       expect(sleep.getHighestOnDay(date)).to.deep.equal([2, 9.2]);
+    });
+
+    it('should return an null if there are no users', function() {
+      sleep.data = [];
+      let date = moment("2019/06/21", 'YYYY/MM/DD');
+      expect(sleep.getHighestOnDay(date)).to.deep.equal(null);
     });
   });
 

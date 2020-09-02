@@ -46,7 +46,7 @@ class Sleep extends DataRepository {
   }
 
   getHighestOnDay(date) {
-    let output =this.uniqueIDs.reduce(([champ, record], contender) => {
+    let output = this.uniqueIDs.reduce(([champ, record], contender) => {
       let contenderHours = this.getHoursOnDate(date, contender);
       if (contenderHours > record) {
         return [contender, contenderHours];
