@@ -86,7 +86,7 @@ class DataRepository {
   getStatOverallAverageForUser(stat, id) {
     let userData = this.getUserData(id);
     if(userData.length === 0) {
-      return 0;
+      return null;
     }
     let total = userData.reduce((sum, day) => {
       sum += day[stat];

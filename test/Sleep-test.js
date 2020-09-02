@@ -161,27 +161,27 @@ describe('Sleep', function() {
     });
   });
 
-  describe('calculateAverage()', function() {
+  describe('getAverageHours()', function() {
     it('should calculate the average number of hours a user has slept per day', function() {
       expect(sleep.getAverageHours(1)).to.equal(45 / 7);
     });
 
-    it('should return 0 if there is no sleep data available', function() {
-      expect(sleep.getAverageHours(3)).to.equal(0);
+    it('should return null if there is no sleep data available', function() {
+      expect(sleep.getAverageHours(3)).to.equal(null);
     });
   });
 
-  describe('calculateAverageQuality()', function() {
+  describe('getAverageQuality()', function() {
     it('should calculate the average sleep quality per day over all time', function() {
       expect(sleep.getAverageQuality(1)).to.be.closeTo((23.8 / 7), .0001);
     });
 
-    it('should return 0 if there is no sleep data available', function() {
-      expect(sleep.getAverageQuality(3)).to.equal(0);
+    it('should return null if there is no sleep data available', function() {
+      expect(sleep.getAverageQuality(3)).to.equal(null);
     });
   });
 
-  describe('getHoursSleptOnDate()', function() {
+  describe('getHoursOnDate()', function() {
     it('should return the amount of hours slept for a specific date', function() {
       let date = moment("2019/06/17", 'YYYY/MM/DD');
       expect(sleep.getHoursOnDate(date, 1)).to.equal(4.1);
@@ -199,9 +199,11 @@ describe('Sleep', function() {
       expect(sleep.getQualityOnDate(date, 1)).to.equal(3.6);
     });
 
-    it('should return null if there is no sleep data available', function() {
+    it('should return null if the date or user is invalid', function() {
       let date = moment("2020/06/17", 'YYYY/MM/DD');
       expect(sleep.getQualityOnDate(date, 1)).to.equal(null);
+      date = moment("2019/06/17", 'YYYY/MM/DD');
+      expect(sleep.getQualityOnDate(date, 3)).to.equal(null);
     });
   });
 
@@ -292,6 +294,16 @@ describe('Sleep', function() {
       sleep = new Sleep(sleepUserData);
       let date = moment("2019/06/21", 'YYYY/MM/DD');
       expect(sleep.findHighQualityUsers(date)).to.deep.equal([1, 2])
+    });
+
+    it('should return an empty array if there are no users with an average sleep quality of 3 or higher', function() {
+      sleepUserData = sleepUserData.map(data => {
+        data.sleepQuality = 2.9
+        return data;
+      });
+      sleep = new Sleep(sleepUserData);
+      let date = moment("2019/06/21", 'YYYY/MM/DD');
+      expect(sleep.findHighQualityUsers(date)).to.deep.equal([])
     });
   });
 
