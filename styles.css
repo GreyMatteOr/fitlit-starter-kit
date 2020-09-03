@@ -1,4 +1,4 @@
-@import '../node_modules/flatpickr/dist/flatpickr.min.css';
+@import './node_modules/flatpickr/dist/flatpickr.min.css';
 
 html,
 body {
@@ -63,7 +63,7 @@ h1 {
   align-self: center;
   align-items: center;
   text-align: center;
-  background: url('../docs/calendar-icon.png');
+  background: url('./docs/calendar-icon.png');
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center;

@@ -5,7 +5,7 @@
     <title>Activity Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Spartan&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./normalize.css">
+    <link rel="stylesheet" type="text/css" href="./src/normalize.css">
     <link rel="stylesheet" type="text/css" href="./styles.css">
   </head>
   <body>
@@ -16,7 +16,7 @@
         <time id='current-day'  datetime="2008-02-14 20:00">Date</time>
       </button>
       <div id='icon'>
-        <img src="../docs/fitlit-icon.png" alt="icon">
+        <img src="./docs/fitlit-icon.png" alt="icon">
         <h3>fitlit</h3>
       </div>
     </header>
@@ -49,8 +49,8 @@
             <h2 class='sleep-quality-title'>quality of sleep</h2>
             <h3 class='stat' data-repo='sleep' data-stat='sleepQuality'>stat</h3>
           </div>
-          <img class='sleep-key' src="../docs/sleep-key.png" alt="sleep-key">
-          <canvas id="sleep-chart"></canvas>
+          <img class='sleep-key' src="./docs/sleep-key.png" alt="sleep-key">
+          <canvas class="sleep-chart"></canvas>
         </div>
       </section>
 
@@ -60,7 +60,7 @@
             <h2 class='ounces-drunk-title'>ounces drunk</h2>
             <h3 class='stat' data-repo='hydration' data-stat='numOunces'>stat</h3>
           </div>
-          <canvas id="hydration-chart"></canvas>
+          <canvas class="hydration-chart"></canvas>
         </div>
       </section>
 
@@ -136,19 +136,19 @@
 
     </main>
 
-    <script type="text/javascript" src="../node_modules/chart.js/dist/Chart.js"></script>
-    <script type="text/javascript" src="../node_modules/flatpickr/dist/flatpickr.js"></script>
-    <script type="text/javascript" src="../node_modules/moment/moment.js"></script>
-    <script type="text/javascript" src="../data/users.js"></script>
-    <script type="text/javascript" src="../data/hydration.js"></script>
-    <script type="text/javascript" src="../data/sleep.js"></script>
-    <script type="text/javascript" src="../data/activity.js"></script>
-    <script type="text/javascript" src="./DataRepository.js"></script>
-    <script type="text/javascript" src="./UserRepository.js"></script>
-    <script type="text/javascript" src="./User.js"></script>
-    <script type="text/javascript" src="./Hydration.js"></script>
-    <script type="text/javascript" src="./Sleep.js"></script>
-    <script type="text/javascript" src="./Activity.js"></script>
+    <script type="text/javascript" src="./node_modules/chart.js/dist/Chart.js"></script>
+    <script type="text/javascript" src="./node_modules/flatpickr/dist/flatpickr.js"></script>
+    <script type="text/javascript" src="./node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="./data/users.js"></script>
+    <script type="text/javascript" src="./data/hydration.js"></script>
+    <script type="text/javascript" src="./data/sleep.js"></script>
+    <script type="text/javascript" src="./data/activity.js"></script>
+    <script type="text/javascript" src="./src/DataRepository.js"></script>
+    <script type="text/javascript" src="./src/UserRepository.js"></script>
+    <script type="text/javascript" src="./src/User.js"></script>
+    <script type="text/javascript" src="./src/Hydration.js"></script>
+    <script type="text/javascript" src="./src/Sleep.js"></script>
+    <script type="text/javascript" src="./src/Activity.js"></script>
     <script type="text/javascript" src="./scripts.js"></script>
   </body>
 </html>

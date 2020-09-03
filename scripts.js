@@ -50,7 +50,7 @@ function displayFriends() {
   let socialNode = document.querySelector('.social-underlay');
   socialNode.innerHTML = '';
   currentUser.friends.forEach(friendID => {
-    let pictureFile = `../docs/HS${friendID}.jpeg`;
+    let pictureFile = `./docs/HS${friendID}.jpeg`;
     let friend = repos.users.getUser(friendID);
     let numSteps = repos.activity.getStepsTaken(currentDay, friendID);
     let percent = Math.floor( 1000 * numSteps / friend.dailyStepGoal) / 10;
@@ -92,7 +92,7 @@ function displayCorrectChart(event) {
 };
 
 function displayStepGoalMessage() {
-  let profilePic = `../docs/HS${currentUser.id}.jpeg`;
+  let profilePic = `./docs/HS${currentUser.id}.jpeg`;
   let newHtml = `<img class='profile-picture' alt='profile-picture' src='${profilePic}'>`;
   document.querySelector('header').innerHTML = newHtml + document.querySelector('header').innerHTML;
   let userStepGoal = currentUser.dailyStepGoal;
@@ -133,7 +133,7 @@ function displayStepsChart() {
   let fillPalette = ['#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126', '#e88126'];
   let borderPalette = ['#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402', '#6e3402'];
   buildChart(
-    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    getNewCanvas('.activity .underlay', 'activity-chart'),
     weekSteps,
     'Steps',
     fillPalette,
@@ -146,7 +146,7 @@ function displayMinutesActiveChart() {
   let fillPalette = ['#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630', '#f0d630'];
   let borderPalette = ['#574b00', '#574b00', '#574b00', '#574b00', '#574b00', '#574b00', '#574b00'];
   buildChart(
-    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    getNewCanvas('.activity .underlay', 'activity-chart'),
     weekMinutes,
     'Minutes',
     fillPalette,
@@ -160,7 +160,7 @@ function displayMilesChart() {
   let fillPalette = ['#458511', '#458511', '#458511', '#458511', '#458511', '#458511', '#458511'];
   let borderPalette = ['#132900', '#132900', '#132900', '#132900', '#132900', '#132900', '#132900'];
   buildChart(
-    getNewCanvas(document.querySelector('.activity canvas'), '.activity .underlay', 'activity-chart'),
+    getNewCanvas('.activity .underlay', 'activity-chart'),
     weekMiles,
     'Miles',
     fillPalette,
@@ -175,7 +175,7 @@ function displaySleepChart() {
   let fillPalette = weekQuality.map((number) => getSleepColor(number));
   let borderPalette = ['#000', '#000', '#000', '#000', '#000', '#000', '#000'];
   buildChart(
-    getNewCanvas(document.getElementById('sleep-chart'), '.sleep .underlay', 'sleep-chart'),
+    getNewCanvas('.sleep .underlay', 'sleep-chart'),
     weekHours,
     'Sleep',
     fillPalette,
@@ -188,7 +188,7 @@ function displayHydrationChart() {
   let borderPalette = ['#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2', '#2a6ba2'];
   let fillPalette = ['#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0', '#77afe0'];
   let hChart = buildChart(
-    getNewCanvas(document.getElementById('hydration-chart'), '.hydration .underlay', 'hydration-chart'),
+    getNewCanvas('.hydration .underlay', 'hydration-chart'),
     hydrationWeekData,
     'Hydration',
     fillPalette,
@@ -197,8 +197,8 @@ function displayHydrationChart() {
 };
 
 
-function getNewCanvas(chartNode, parentSelector, selfSelector) {
-  chartNode.remove();
+function getNewCanvas(parentSelector, selfSelector) {
+  document.querySelector(`.${selfSelector}`).remove();
   document.querySelector(parentSelector).innerHTML += `<canvas class="${selfSelector}"></canvas>`;
   return document.querySelector(`.${selfSelector}`);
 }
