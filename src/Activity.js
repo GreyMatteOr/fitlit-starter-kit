@@ -1,7 +1,7 @@
-if (typeof(module) !== 'undefined') {
-  const moment = require('moment');
-  const DataRepository = require('./DataRepository.js');
-}
+// if (typeof module !== 'undefined') {
+//   var moment = require('moment');
+//   var DataRepository = require('./DataRepository.js');
+// }
 
 class Activity extends DataRepository {
   constructor(data) {
@@ -51,7 +51,10 @@ class Activity extends DataRepository {
   };
 
   getRecordStairs(user) {
-    return this.data.reduce((record, contender) => {
+    if(this.getUserData(user.id).length ===0) {
+      return null;
+    }
+    return this.getUserData(user.id).reduce((record, contender) => {
       return (contender.userID === user.id ? Math.max(record, contender.flightsOfStairs) : record);
     }, 0);
   };
@@ -80,7 +83,7 @@ class Activity extends DataRepository {
     let days = this.data.filter((obj) => {
       return moment(date).isSame(obj.date)
     });
-    if(days.length === 0) return 0;
+    if(days.length === 0) return null;
     let sum = days.reduce((total, currentUser) => {
       total += currentUser[stat]
       return total
@@ -89,6 +92,6 @@ class Activity extends DataRepository {
   }
 }
 
-if (typeof(module) !== 'undefined') {
+if (typeof module !== 'undefined') {
   module.exports = Activity;
 }

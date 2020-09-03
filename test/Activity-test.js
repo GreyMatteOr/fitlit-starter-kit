@@ -3,7 +3,7 @@ const expect = chai.expect;
 const moment = require("moment");
 
 
-const Activity = require('../src/Activity');
+const Activity = require('../src/Activity.js');
 
 describe('Activity', function() {
 
@@ -188,7 +188,7 @@ describe('Activity', function() {
       expect(activity.getAverageActivityOverWeek(user1.id, weekEnd)).to.equal(664 / 7);
     });
 
-    it(`should not include any days that don't have data in the calculation`, function() {
+    it(`should not include in the calculation any days that don't have data`, function() {
       weekEnd = moment('2019/06/20', 'YYYY/MM/DD');
       expect(activity.getAverageActivityOverWeek(user1.id, weekEnd)).to.equal(637 / 6);
     });
@@ -266,9 +266,9 @@ describe('Activity', function() {
       expect(activity.getRecordStairs(user2)).to.equal(37);
     });
 
-    it('should return 0 if no data is available', function() {
+    it('should return null if no data is available', function() {
       let user3 = {id: 3};
-      expect(activity.getRecordStairs(user3)).to.equal(0);
+      expect(activity.getRecordStairs(user3)).to.equal(null);
     });
   });
 
@@ -296,7 +296,7 @@ describe('Activity', function() {
       expect(activity2.getMonthlyActivityChampion(july)).to.deep.equal({userID: 2, record: 288})
     });
 
-    it('should return null if the monthly activity record is 0', function() {
+    it('should return null if the month contains no data', function() {
       expect(activity2.getMonthlyActivityChampion(futureJuly)).to.deep.equal({userID: null, record: 0})
     });
   })
@@ -306,9 +306,9 @@ describe('Activity', function() {
       expect(activity.getAverageStepsOnDay(date)).to.equal(17327 / 2);
     });
 
-    it('should return 0 if the given day has no data', function() {
+    it('should return null if the given day has no data', function() {
       futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
-      expect(activity.getAverageStepsOnDay(futureJuly)).to.equal(0);
+      expect(activity.getAverageStepsOnDay(futureJuly)).to.equal(null);
     });
   });
 
@@ -317,9 +317,9 @@ describe('Activity', function() {
       expect(activity.getAverageMinutesOnDay(date)).to.equal(243 / 2);
     });
 
-    it('should return 0 if the given day has no data', function() {
+    it('should return null if the given day has no data', function() {
       futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
-      expect(activity.getAverageMinutesOnDay(futureJuly)).to.equal(0);
+      expect(activity.getAverageMinutesOnDay(futureJuly)).to.equal(null);
     });
   });
 
@@ -328,9 +328,9 @@ describe('Activity', function() {
       expect(activity.getAverageFlightsOnDay(date)).to.equal(46 / 2);
     });
 
-    it('should return 0 if the given day has no data', function() {
+    it('should return null if the given day has no data', function() {
       futureJuly = moment('2020/07/21', 'YYYY/MM/DD')
-      expect(activity.getAverageFlightsOnDay(futureJuly)).to.equal(0);
+      expect(activity.getAverageFlightsOnDay(futureJuly)).to.equal(null);
     });
   });
 });

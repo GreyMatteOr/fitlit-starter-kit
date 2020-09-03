@@ -1,7 +1,7 @@
-if (typeof(module) !== 'undefined') {
-  const moment = require('moment');
-  const DataRepository = require('./DataRepository.js');
-}
+// if (typeof module !== 'undefined') {
+//   var moment = require('moment');
+//   var DataRepository = require('./DataRepository.js');
+// }
 
 class Hydration extends DataRepository{
   constructor(data) {
@@ -21,6 +21,6 @@ class Hydration extends DataRepository{
   };
 };
 
-if (typeof(module) !== 'undefined') {
+if (typeof module !== 'undefined') {
   module.exports = Hydration;
 }

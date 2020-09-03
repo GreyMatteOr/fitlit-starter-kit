@@ -1,8 +1,8 @@
-if (typeof(module) !== 'undefined') {
-  const moment = require('moment');
+if (typeof module !== 'undefined') {
+  var moment = require('moment');
 }
 
-class DataRepository{
+class DataRepository {
   constructor(data) {
     this.earliestDay = moment(data[0].date, 'YYYY/MM/DD');
     this.lastDay = moment(data[0].date, 'YYYY/MM/DD');
@@ -27,7 +27,7 @@ class DataRepository{
     return output;
   }
 
-    getLastDayString() {
+  getLastDayString() {
     let output = this.lastDay._i.replace('/', '-');
     output = this.lastDay._i.replace('/', '-');
     return output;
@@ -85,8 +85,8 @@ class DataRepository{
 
   getStatOverallAverageForUser(stat, id) {
     let userData = this.getUserData(id);
-    if(userData.length === 0){
-      return 0;
+    if(userData.length === 0) {
+      return null;
     }
     let total = userData.reduce((sum, day) => {
       sum += day[stat];
@@ -107,6 +107,6 @@ class DataRepository{
   }
 }
 
-if (typeof(module) !== 'undefined') {
+if (typeof module !== 'undefined') {
   module.exports = DataRepository;
 }
